@@ -13,14 +13,14 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-# resource "aws_instance" "app_server" {
-#   ami           = "ami-830c94e3"
-#   instance_type = "t2.micro"
+resource "aws_instance" "app_server" {
+  ami           = "ami-05b10e08d247fb927"
+  instance_type = "t2.micro"
 
-#   tags = {
-#     Name = "fiap-lanchonete-server"
-#   }
-# }
+  tags = {
+    Name = "fiap-lanchonete-instance"
+  }
+}
 
 resource "github_repository" "fiap-lanchonete" {
   name       = "fiap-lanchonete"
