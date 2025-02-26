@@ -1,3 +1,20 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Filter out local zones, which are not currently supported 
+# with managed node groups
+data "aws_availability_zones" "available" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+################################################################################
+# VPC Module
+################################################################################
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   #   source  = "../../"
@@ -25,11 +42,7 @@ module "vpc" {
   #   }
 }
 
-# Filter out local zones, which are not currently supported 
-# with managed node groups
-data "aws_availability_zones" "available" {
-  filter {
-    name   = "opt-in-status"
-    values = ["opt-in-not-required"]
-  }
-}
+
+################################################################################
+# VPC Endpoints Module
+################################################################################
