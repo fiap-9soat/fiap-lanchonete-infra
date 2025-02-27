@@ -8,3 +8,11 @@ Repositório contendo os arquivos de configuração (Terraform) para viabilizar 
 ## Desenvolvimento
 
 O desenvolvimento e construção da aplicação é feito diretamente no [repositório](https://github.com/fiap-9soat/fiap-lanchonete) da API principal, onde a imagem Docker é construida e enviada diretamente ao Dockerhub, onde pode ser consumida por qualquer canal.
+
+Criar o dev.auto.tfvars em cada pasta contendo as variáveis
+
+terraform -chdir=./modules/vpc init
+terraform -chdir=./modules/vpc apply
+
+terraform init
+terraform apply
