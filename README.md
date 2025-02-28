@@ -11,8 +11,5 @@ O desenvolvimento e construção da aplicação é feito diretamente no [reposit
 
 Criar o dev.auto.tfvars em cada pasta contendo as variáveis
 
-terraform -chdir=./modules/vpc init
-terraform -chdir=./modules/vpc apply
-
 terraform init
 terraform apply
