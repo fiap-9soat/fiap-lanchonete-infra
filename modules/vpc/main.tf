@@ -100,7 +100,11 @@ module "vpc_endpoints" {
   tags = merge(local.tags, {
     Project  = "Secret"
     Endpoint = "true"
-  })
+    },
+    { "Subnet0" = "${module.vpc.private_subnets[0]}" },
+    { "Subnet1" = "${module.vpc.private_subnets[1]}" },
+    { "Subnet2" = "${module.vpc.private_subnets[2]}" },
+  )
 }
 
 module "vpc_endpoints_nocreate" {
