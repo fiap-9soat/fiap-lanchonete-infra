@@ -1,7 +1,26 @@
-# variable "vpc_cidr" {}
-# variable "private_subnet_1" {}
-# variable "private_subnet_2" {}
-# variable "public_subnet_1" {}
-# variable "public_subnet_2" {}
-# variable "security_group_id" {}
-# variable "route_table_id" {}
+# variable "aws_region" {
+#   type        = string
+#   description = "The region in which the resources will be created"
+#   default     = "us-east-1"
+# }
+
+# variable "aws_access_key" {
+#   type        = string
+#   description = "The aws development account access key"
+# }
+
+# variable "aws_secret_key" {
+#   type        = string
+#   description = "The aws development account secret key"
+# }
+
+# variable "aws_token_key" {
+#   type        = string
+#   description = "The aws development account token (optional)"
+#   default     = ""
+# }
+
+# variable "role_arn" {
+#   description = "The ARN of the Role to be used for deploying"
+#   type        = string
+# }

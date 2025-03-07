@@ -49,7 +49,7 @@ module "vpc_endpoints" {
 
 locals {
   cluster_name = "fiap-lanchonete-eks"
-  iam_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/EMC_EC2_DefaultRole"
+  iam_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 }
 
 data "aws_caller_identity" "current" {}

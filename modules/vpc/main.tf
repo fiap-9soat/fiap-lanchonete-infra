@@ -1,6 +1,9 @@
-provider "aws" {
-  region = "us-east-1"
-}
+# provider "aws" {
+#   region     = "us-east-1"
+#   access_key = var.aws_access_key
+#   secret_key = var.aws_secret_key
+#   token      = var.aws_token_key
+# }
 
 # Filter out local zones, which are not currently supported 
 # with managed node groups
@@ -88,13 +91,14 @@ module "vpc_endpoints" {
       service             = "eks"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
-    rds = {
-      service             = "rds"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
       security_group_ids  = [aws_security_group.rds.id]
     },
+    # rds = {
+    #   service             = "rds"
+    #   private_dns_enabled = true
+    #   subnet_ids          = module.vpc.private_subnets
+    #   security_group_ids  = [aws_security_group.rds.id]
+    # },
   }
 
   tags = merge(local.tags, {
@@ -104,6 +108,7 @@ module "vpc_endpoints" {
     { "Subnet0" = "${module.vpc.private_subnets[0]}" },
     { "Subnet1" = "${module.vpc.private_subnets[1]}" },
     { "Subnet2" = "${module.vpc.private_subnets[2]}" },
+    { "SecurityGroupId" = "${aws_security_group.rds.id}" },
   )
 }
 
