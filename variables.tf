@@ -30,6 +30,11 @@ variable "TFC_AWS_RUN_ROLE_ARN" {
   default     = "LabRole"
 }
 
+variable "HCP_TOKEN" {
+    description = "The HCP Token that allows synchronization to the backend"
+    type = string
+}
+
 # variable "HCP_ORG_NAME" {
 #   description = "Your HCP Organization name to identify the cloud backend"
 #   type        = string

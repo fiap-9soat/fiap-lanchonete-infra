@@ -15,7 +15,7 @@ terraform {
     workspaces {
       tags = ["lanchonete-infra"]
     }
-    token = "O1YETTFMzzPD7g.atlasv1.M8jhTRaawZaNQ6LuUlAhP8UiznuMRE6zAGjHPtRkzuNZjoqmyTF8uetCXB4rzcYRhWM"
+    token = var.HCP_TOKEN
   }
 
   required_version = ">= 1.2.0"
