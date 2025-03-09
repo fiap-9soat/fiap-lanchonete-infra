@@ -1,45 +1,39 @@
-variable "github_pat" {
-  type        = string
-  description = "Your Github Personal Acess Token"
-}
 variable "aws_region" {
   type        = string
   description = "The region in which the resources will be created"
   default     = "us-east-1"
 }
 
-variable "AWS_ACCESS_KEY_ID" {
+variable "access_key" {
   type        = string
   description = "The aws development account access key"
 }
 
-variable "AWS_SECRET_ACCESS_KEY" {
+variable "secret_key" {
   type        = string
   description = "The aws development account secret key"
 }
 
-variable "AWS_SESSION_TOKEN" {
+variable "token_key" {
   type        = string
   description = "The aws development account token (optional)"
   default     = ""
 }
 
-variable "TFC_AWS_RUN_ROLE_ARN" {
-  description = "The ARN of the Role to be used for deploying"
-  type        = string
-  default     = "LabRole"
+variable "hcp_org_name" {
+  description = "The HCP organization name"
+  type = string
+  default = "fiap-lanchonete"
 }
 
-variable "HCP_TOKEN" {
+variable "hcp_workspace_name" {
+  description = "The HCP workspace name"
+  type = string
+  default = "lanchonete-infra"
+}
+
+variable "hcp_token" {
     description = "The HCP Token that allows synchronization to the backend"
     type = string
 }
 
-# variable "HCP_ORG_NAME" {
-#   description = "Your HCP Organization name to identify the cloud backend"
-#   type        = string
-# }
-
-# variable "HCP_WORKSPACE_NAME" {
-#   description = "Your HCP Workspace Name"
-# }

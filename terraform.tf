@@ -11,11 +11,11 @@ terraform {
   }
 
   cloud {
-    organization = "fiap-lanchonete"
+    organization = var.hcp_org_name
     workspaces {
-      tags = ["lanchonete-infra"]
+      tags = [var.hcp_workspace_name]
     }
-    token = var.HCP_TOKEN
+    token = var.hcp_token
   }
 
   required_version = ">= 1.2.0"
