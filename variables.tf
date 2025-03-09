@@ -20,20 +20,3 @@ variable "token_key" {
   default     = ""
 }
 
-variable "hcp_org_name" {
-  description = "The HCP organization name"
-  type = string
-  default = "fiap-lanchonete"
-}
-
-variable "hcp_workspace_name" {
-  description = "The HCP workspace name"
-  type = string
-  default = "lanchonete-infra"
-}
-
-variable "hcp_token" {
-    description = "The HCP Token that allows synchronization to the backend"
-    type = string
-}
-

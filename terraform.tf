@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
-    }
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.40"
@@ -11,11 +7,10 @@ terraform {
   }
 
   cloud {
-    organization = var.hcp_org_name
+    organization = "fiap-lanchonete"
     workspaces {
-      tags = [var.hcp_workspace_name]
+      tags = ["lanchonete-infra"]
     }
-    token = var.hcp_token
   }
 
   required_version = ">= 1.2.0"
