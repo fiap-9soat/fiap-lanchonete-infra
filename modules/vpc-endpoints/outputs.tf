@@ -16,3 +16,7 @@ output "security_group_id" {
   description = "ID of the security group"
   value       = try(aws_security_group.this[0].id, null)
 }
+
+output "vpc_id" {
+  value = try(aws_vpc_endpoint.this[0].vpc_id, null)
+}

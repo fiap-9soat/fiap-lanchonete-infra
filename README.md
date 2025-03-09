@@ -1,23 +1,22 @@
 # fiap-lanchonete-infra
 
-Fazer login no terraform
-https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
-
 Criar uma Organization no HCP
-Gerar um token da sua conta no HCP e colocá-lo na variável de ambiente HCP_TOKEN
+Gerar um token da sua conta no HCP
 ![alt text](image-1.png)
 
-terraform workspace new "NOME"
-Criar um workspace no HCP Terraform e alterar a configuração do modo de execução para local
+Fazer login no terraform com o comando terraform login, passando esse token
+https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
+
+Criar um workspace no HCP Terraform com o comando terraform workspace new lanchonete-infra e alterar a configuração do modo de execução para local
 ![alt text](image.png)
 
 Adicionar as variáveis de ambiente nos projetos
 TFC_AWS_RUN_ROLE_ARN = Sua Role
 AWS_SESSION_TOKEN = (opcional)
 AWS_SECRET_ACCESS_KEY =
-AWS_ACCESS_KEY_ID =
-github_pat =
-HCP_TOKEN =
+access_key =
+secret_key =
+token_key (opcional) =
 
 terraform init
 terraform apply

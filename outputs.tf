@@ -1,3 +1,3 @@
 output "instance_ip_addr" {
-  value = "teste"
+  value = module.eks.teste
 }
