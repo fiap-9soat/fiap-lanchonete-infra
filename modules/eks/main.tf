@@ -9,9 +9,9 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   cluster_addons = {
-    aws-ebs-csi-driver = {
-      service_account_role_arn = local.iam_role_arn
-    }
+    # aws-ebs-csi-driver = {
+    #   service_account_role_arn = local.iam_role_arn
+    # }
     kube-proxy = {
       most_recent = true
     }

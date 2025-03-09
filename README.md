@@ -3,6 +3,20 @@
 Fazer login no terraform
 https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
 
+terraform workspace new "NOME"
+Criar um workspace no HCP Terraform e alterar a configuração do modo de execução para local
+![alt text](image.png)
+terraform init
+terraform apply
+
+Adicionar as variáveis de ambiente nos projetos
+TFC_AWS_RUN_ROLE_ARN = LabRole
+TFC_AWS_PROVIDER_AUTH = true
+AWS_SESSION_TOKEN = (opcional)
+AWS_SECRET_ACCESS_KEY =
+AWS_ACCESS_KEY_ID =
+github_pat =
+
 Repositório contendo os arquivos de configuração (Terraform) para viabilizar o deploy da API principal do projeto. A infraestrutura é baseada no uso do AWS ECS/EC2.
 
 ## Desenvolvimento

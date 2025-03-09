@@ -1,4 +1,7 @@
-variable "github_pat" {}
+variable "github_pat" {
+  type        = string
+  description = "Your Github Personal Acess Token"
+}
 variable "aws_region" {
   type        = string
   description = "The region in which the resources will be created"
@@ -21,8 +24,17 @@ variable "AWS_SESSION_TOKEN" {
   default     = ""
 }
 
-variable "role_arn" {
+variable "TFC_AWS_RUN_ROLE_ARN" {
   description = "The ARN of the Role to be used for deploying"
   type        = string
   default     = "LabRole"
 }
+
+# variable "HCP_ORG_NAME" {
+#   description = "Your HCP Organization name to identify the cloud backend"
+#   type        = string
+# }
+
+# variable "HCP_WORKSPACE_NAME" {
+#   description = "Your HCP Workspace Name"
+# }
