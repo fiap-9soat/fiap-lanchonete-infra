@@ -4,5 +4,5 @@ output "cluster_name" {
 }
 
 output "teste" {
-  value = local.private_subnets
+  value = aws_eks_cluster.eks_cluster.vpc_config[0].subnet_ids
 }

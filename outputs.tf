@@ -1,7 +1,11 @@
-output "instance_ip_addr" {
+# output "teste1" {
+#   value = toset(data.aws_subnets.private.ids)
+# }
+
+output "teste2" {
   value = module.eks.teste
 }
 
-output "shared_vpc_id" {
-  value = module.vpc.vpc_id
+output "vpc_id" {
+  value = module.vpc_endpoints.vpc_id
 }

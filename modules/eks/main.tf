@@ -8,12 +8,12 @@ resource "aws_eks_cluster" "eks_cluster" {
     cluster_security_group_id = var.security_group_id
     vpc_id                    = var.vpc_id
 
-    subnet_ids = concat(local.private_subnets, local.public_subnets)
+    subnet_ids = concat(var.private_subnets.ids, var.public_subnets.ids)
   }
 }
 
-locals {
-  private_subnets = tolist([for i in range(0, 3) : tostring({ for key, value in var.private_subnets : key => value }["${i}"])])
-  public_subnets  = tolist([for i in range(0, 3) : tostring({ for key, value in var.public_subnets : key => value }["${i}"])])
-}
+# locals {
+#   private_subnets = keys({ for key, value in var.private_subnets : key => value })
+#   public_subnets  = tolist([for i in range(0, 3) : tostring({ for key, value in var.public_subnets : key => value }["${i}"])])
+# }
 
