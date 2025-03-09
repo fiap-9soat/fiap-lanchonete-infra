@@ -1,19 +1,3 @@
-# provider "aws" {
-#   region     = "us-east-1"
-#   access_key = var.AWS_ACCESS_KEY_ID
-#   secret_key = var.AWS_SECRET_ACCESS_KEY
-#   token      = var.AWS_SESSION_TOKEN
-# }
-
-# terraform {
-#   cloud {
-#     organization = "fiap-lanchonete"
-#     workspaces {
-#       tags = ["lanchonete-infra"]
-#     }
-#   }
-# }
-
 # Filter out local zones, which are not currently supported 
 # with managed node groups
 data "aws_availability_zones" "available" {
@@ -28,8 +12,10 @@ locals {
 
   region = "us-east-1"
 
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  vpc_cidr        = "10.0.0.0/16"
+  azs             = slice(data.aws_availability_zones.available.names, 0, 3)
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 4)]
   tags = {
     Example    = local.name
     GithubRepo = "fiap-lanchonete-infra"
@@ -50,8 +36,8 @@ module "vpc" {
   cidr = local.vpc_cidr
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
 
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 4)]
+  private_subnets = local.private_subnets
+  public_subnets  = local.public_subnets
 
   enable_nat_gateway           = true
   single_nat_gateway           = true
@@ -100,7 +86,7 @@ module "vpc_endpoints" {
       service             = "eks"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-      security_group_ids  = [aws_security_group.rds.id]
+      security_group_ids  = [aws_security_group.eks.id]
     },
     # rds = {
     #   service             = "rds"
@@ -117,7 +103,7 @@ module "vpc_endpoints" {
     { "Subnet0" = "${module.vpc.private_subnets[0]}" },
     { "Subnet1" = "${module.vpc.private_subnets[1]}" },
     { "Subnet2" = "${module.vpc.private_subnets[2]}" },
-    { "SecurityGroupId" = "${aws_security_group.rds.id}" },
+    { "SecurityGroupId" = "${aws_security_group.eks.id}" },
   )
 }
 
@@ -127,8 +113,8 @@ module "vpc_endpoints_nocreate" {
   create = false
 }
 
-resource "aws_security_group" "rds" {
-  name_prefix = "${local.name}-rds"
+resource "aws_security_group" "eks" {
+  name_prefix = "${local.name}-eks"
   description = "Allow MySQL inbound traffic"
   vpc_id      = module.vpc.vpc_id
 
