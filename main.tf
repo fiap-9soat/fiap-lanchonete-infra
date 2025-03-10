@@ -16,9 +16,9 @@ module "eks" {
 
   cluster_name    = local.cluster_name
   iam_role_arn    = local.iam_role_arn
-  vpc_id          = module.vpc.vpc_id
   private_subnets = module.vpc.private_subnets
   public_subnets  = module.vpc.public_subnets
+  sg_id           = module.vpc.eks_sg_id
 
   depends_on = [module.vpc]
 }
