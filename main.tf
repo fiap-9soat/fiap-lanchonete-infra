@@ -6,48 +6,19 @@ locals {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_subnets" "private" {
-  filter {
-    name   = "vpc-id"
-    values = [module.vpc_endpoints.vpc_id]
-  }
-
-  tags = {
-    Tier = "Private"
-  }
-
-  depends_on = [module.vpc]
-}
-
-data "aws_subnets" "public" {
-  filter {
-    name   = "vpc-id"
-    values = [module.vpc_endpoints.vpc_id]
-  }
-
-  tags = {
-    Tier = "Public"
-  }
-
-  depends_on = [module.vpc]
-}
-
 
 module "vpc" {
   source = "./modules/vpc"
 }
-module "vpc_endpoints" {
-  source = "./modules/vpc-endpoints"
-}
+
 module "eks" {
   source = "./modules/eks"
 
-  cluster_name      = local.cluster_name
-  iam_role_arn      = local.iam_role_arn
-  private_subnets   = data.aws_subnets.private
-  public_subnets    = data.aws_subnets.public
-  security_group_id = module.vpc_endpoints.security_group_id
-  vpc_id            = module.vpc_endpoints.vpc_id
+  cluster_name    = local.cluster_name
+  iam_role_arn    = local.iam_role_arn
+  vpc_id          = module.vpc.vpc_id
+  private_subnets = module.vpc.private_subnets
+  public_subnets  = module.vpc.public_subnets
 
   depends_on = [module.vpc]
 }
@@ -55,11 +26,11 @@ module "eks" {
 module "workers_node_group" {
   source = "./modules/nodes"
 
-  private_subnets = module.vpc.private_subnets
   cluster_name    = local.cluster_name
   iam_role_arn    = local.iam_role_arn
+  private_subnets = module.vpc.private_subnets
 
-  depends_on = [module.eks]
+  depends_on = [module.vpc, module.eks]
 }
 
 

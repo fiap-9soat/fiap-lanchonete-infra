@@ -1,33 +1,88 @@
 # fiap-lanchonete-infra
 
-Criar uma Organization no HCP
-Gerar um token da sua conta no HCP
-![alt text](image-1.png)
+Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
+principal do projeto.
 
-Fazer login no terraform com o comando terraform login, passando esse token
+## Instalação e Execução
+
+### Pre-requisitos
+
+Certifique-se de ter instalado uma versão recente da CLI do `terraform`.
+
+### Autenticação com o Terraform HCP
+
+Essa organização utiliza o Terraform HCP para compartilhamento de estado entre os repositórios.  
+Isso significa que é **obrigatório** realizar o login na plataforma para prosseguir com a instalação:
 https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
 
-Criar um workspace no HCP Terraform com o comando terraform workspace new lanchonete-infra e alterar a configuração do modo de execução para local
-![alt text](image.png)
+### Criando uma organização e workspace
 
-Adicionar as variáveis de ambiente nos projetos
-TFC_AWS_RUN_ROLE_ARN = Sua Role
-AWS_SESSION_TOKEN = (opcional)
-AWS_SECRET_ACCESS_KEY =
-access_key =
-secret_key =
-token_key (opcional) =
+No Painel do Terraform HCP, é importante copiar o nome da organização e o workspace alvo da configuração.  
+Esse passo é essencial, e os valores devem ser especificados nas variaveis de ambiente a seguir:
 
+```hcl
+hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
+hcp_workspace = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
+```
+
+Esse passo é obrigatório para **todos** os projetos de Terraform dessa organização.
+
+### Variaveis de ambiente
+
+É necessário criar algumas variaveis de ambiente para viabilizar a aplicação das configurações pelo CLI do Terraform.  
+Para ambiente local, basta utilizar o arquivo `dev.auto.tfvars.example` como exemplo, criando um `dev.auto.tfvars`
+correspondente:
+
+```hcl
+aws_access_key = "ASIAVEZQ3WJY2KR216362"
+aws_secret_key = "TU+qlmgcNsX5MQz1238214821748211"
+aws_token_key  = "12387218372185712887482173821849211299ddwq+Wp+JXsIYgo8GwFKk7Ms6y7wmGc9J1CqCJ1dAiALfo+D+BERHahJ1CpswGvC0BZah/cF7XIfZNgrxpIbLiq9AghgEAEaDDM1MzkwMDQwOTQ1NyIM5y1D/eAy2LhTThABKpoCER68KmMdcDD57aDTEC8KjfdDsLcco3EN8HfrspVnBAWXhQxMT3bF4aVVusYwMTbjKA4wBb1AK34SohcvbMQvKX+iIZGsIm7CkuMkIZsUeto9bDkwHq7P6e2ctJvUUf4khVv9armJYpqdb7sytoqfjRbYxU8WIgXXRaodcpxxusX1KkzP2DWBb5wKBQy/Cv8c0uiUKL1WtfTobjEZj5eEV9Kjf4GtXvjrfS0QU/eLs6kvsrEiQU6+ZCMeDdvAfWIEritAMFSUEaVDDsPn8uq7CJ0LWbcTB6qHMkP9l4PFMIZiNNQPycS79+4X/2T85jc+QIX4hZDMDrTm5lMmY4Ya5q0y8jxZQMsMbNkEL2JfP9pklquyMT0oQdUOMMLS/L0GOp4Bd6Y8K1rgPaKQkveh74WrGZHa+VNO5V24vSLiTnHr4F/fJFD/ZMz6nBRlwQbX3wUQxAujUPLKDAzF4oEvPzu69L09Q9msZTzFJMVNS/1mwFSqkxRtDjl+SejFFAm55be2YPwpb7qFOy+KFmPj3zlTe8+8Grnk7HjabAukdmAjlXpG3Q/ClJyQ2nc1skl5RHCXkBDG3wQdlj7DorTtHcw="
+hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
+hcp_workspace  = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
+```
+
+_Atenção: essas credenciais são inválidas, e servem apenas como exemplo. Você deve obter as credenciais corretas do
+próprio ambiente da AWS. Todas as variáveis são obrigatórias._
+
+Caso você utilize o `AWS CLI`, os parametros no arquivo `~/.aws/credentials` podem ser utilizados para autenticação.
+A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terraform com as presentes no arquivo
+`~/.aws/credentials`.
+
+| tfvars         | ~/.aws/credentials    |
+|----------------|-----------------------|
+| aws_access_key | aws_access_key_id     |
+| aws_secret_key | aws_secret_access_key |
+| aws_token_key  | aws_session_token     |
+
+### Estrutura
+
+Esse repositório faz uso da funcionalidade de `modules` do Terraform, onde um arquivo principal (`main.tf`) orquestra o
+deploy
+de sub-modulos (pasta `modules`), passando as variaveis necessárias.
+Para realizar os comandos (`terraform apply`, etc). Apenas as variaveis presentes no arquivo `variables.tf` devem ser
+preenchidas.  
+Estas estão especificadas logo acima.
+
+## Aplicar configurações
+
+Inicialize os módulos do Terraform do repositório:
+
+```shell
 terraform init
+```
+
+Com a configuração realizada, basta executar o seguinte comando para validar a configuração e conferir as alterações
+que serão realizadas:
+
+```shell
+terraform plan
+```
+
+Caso o comando execute corretamente, você está devidamente autenticado em alguma instância válida do `AWS`.  
+Para aplicar as alterações, basta rodar o seguinte comando e inserir 'yes' quando solicitado:
+
+```shell
 terraform apply
+```
 
-Repositório contendo os arquivos de configuração (Terraform) para viabilizar o deploy da API principal do projeto. A infraestrutura é baseada no uso do AWS ECS/EC2.
-
-## Desenvolvimento
-
-O desenvolvimento e construção da aplicação é feito diretamente no [repositório](https://github.com/fiap-9soat/fiap-lanchonete) da API principal, onde a imagem Docker é construida e enviada diretamente ao Dockerhub, onde pode ser consumida por qualquer canal.
-
-Criar o dev.auto.tfvars em cada pasta contendo as variáveis
-
-terraform init
-terraform apply
+Em caso de erro, verifique se o usuario executante tem permissões para criações de instâncias do AWS RDS, VPC e Subnets.

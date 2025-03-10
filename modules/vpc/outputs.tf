@@ -2,12 +2,14 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 
-output "private_subnets" {
-  description = "Private subnets ids"
-  value       = local.private_subnets
+output "eks_sg_id" {
+  value = aws_security_group.eks.id
 }
 
 output "public_subnets" {
-  description = "Public subnets ids"
-  value       = local.public_subnets
+  value = module.vpc.public_subnets
+}
+
+output "private_subnets" {
+  value = module.vpc.private_subnets
 }

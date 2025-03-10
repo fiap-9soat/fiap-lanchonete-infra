@@ -4,19 +4,30 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "access_key" {
+variable "aws_access_key" {
   type        = string
   description = "The aws development account access key"
 }
 
-variable "secret_key" {
+variable "aws_secret_key" {
   type        = string
   description = "The aws development account secret key"
 }
 
-variable "token_key" {
+variable "aws_token_key" {
   type        = string
   description = "The aws development account token (optional)"
   default     = ""
 }
 
+variable "hcp_org" {
+  description = "The Terraform HCP organization name"
+  type        = string
+  default     = "fiap-lanchonete"
+}
+
+variable "hcp_workspace" {
+  description = "The Terraform HCP organization's workspace name"
+  type        = string
+  default     = "lanchonete-infra-2"
+}
