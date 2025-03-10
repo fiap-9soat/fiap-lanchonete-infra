@@ -3,6 +3,24 @@
 Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
 principal do projeto.
 
+## Ordem de execução
+
+A maioria dos projetos nessa organização exporta e importa estados no backend compartilhado do Terraform (utilizando
+HCP).
+Sendo assim, no primeiro deploy, os projetos devem ser executados na seguinte ordem:
+
+```
+fiap-lanchonete-auth
+fiap-lanchonete-infra
+fiap-lanchonete-db
+```
+
+**Importante**: esse passo só é necessário caso você esteja "subindo" o projeto pela primeira vez,
+como em uma troca de organização do HCP ou troca de conta do AWS.
+Essa ordem garante que os projetos exportarão as variaveis necessárias no backend compartilhado corretamente.    
+Nos demais casos (como CI/CD, execuções do `terraform apply` posteriores),
+a ordem de execução não é importante.
+
 ## Instalação e Execução
 
 ### Pre-requisitos
@@ -86,3 +104,6 @@ terraform apply
 ```
 
 Em caso de erro, verifique se o usuario executante tem permissões para criações de instâncias do AWS RDS, VPC e Subnets.
+
+**Importante**: Caso seja a primeira "subida" do projeto, siga a ordem de execução
+especificada [aqui](#ordem-de-execução).
