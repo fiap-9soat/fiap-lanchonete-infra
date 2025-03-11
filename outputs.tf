@@ -15,3 +15,15 @@ output "eks_cluster_id" {
 output "shared_vpc_id" {
   value = module.vpc.vpc_id
 }
+
+output "security_group_id" {
+  value = module.vpc.eks_sg_id
+}
+
+output "private_subnets_ids" {
+  value = module.vpc.private_subnets
+}
+
+output "public_subnet_ids" {
+  value = module.vpc.public_subnets
+}
