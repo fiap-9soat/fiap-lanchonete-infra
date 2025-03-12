@@ -20,14 +20,3 @@ variable "aws_token_key" {
   default     = ""
 }
 
-variable "hcp_org" {
-  description = "The Terraform HCP organization name"
-  type        = string
-  default     = "fiap-lanchonete"
-}
-
-variable "hcp_workspace" {
-  description = "The Terraform HCP organization's workspace name"
-  type        = string
-  default     = "lanchonete-infra-2"
-}

@@ -27,3 +27,7 @@ output "private_subnets_ids" {
 output "public_subnet_ids" {
   value = module.vpc.public_subnets
 }
+
+output "aws_region" {
+  value = var.aws_region
+}
