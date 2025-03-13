@@ -9,3 +9,9 @@ resource "aws_eks_cluster" "eks_cluster" {
     subnet_ids = concat(var.public_subnets, var.private_subnets)
   }
 }
+
+data "aws_eks_cluster_auth" "eks_cluster_auth" {
+  name = aws_eks_cluster.eks_cluster.name
+
+  depends_on = [aws_eks_cluster.eks_cluster]
+}

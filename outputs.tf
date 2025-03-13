@@ -31,3 +31,7 @@ output "public_subnet_ids" {
 output "aws_region" {
   value = var.aws_region
 }
+
+output "api_gateway_endpoint" {
+  value = module.api_gateway.api_endpoint
+}
