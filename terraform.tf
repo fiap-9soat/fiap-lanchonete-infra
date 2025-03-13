@@ -10,12 +10,5 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "fiap-lanchonete"
-    workspaces {
-      tags = ["lanchonete-infra"]
-    }
-  }
-
   required_version = ">= 1.11.0"
 }

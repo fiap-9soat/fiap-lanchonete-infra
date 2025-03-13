@@ -1,6 +1,6 @@
 locals {
-  cluster_name       = "fiap-lanchonete-eks"
-  iam_role_arn       = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
+  cluster_name = "fiap-lanchonete-eks"
+  iam_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 }
 
 data "aws_caller_identity" "current" {}
@@ -32,25 +32,17 @@ module "workers_node_group" {
   depends_on = [module.vpc, module.eks]
 }
 
-module "kube" {
-  source = "./modules/kube"
-
-  aws_region = var.aws_region
-  cluster_name = module.eks.eks_cluster_name
-  vpc_id = module.vpc.vpc_id
-  mercado_pago_api_key = ""
-  mysql_password = "fiap"
-  mysql_username = "fiap-lanchonete"
-
-  depends_on = [module.vpc, module.eks]
-}
-
 module "api_gateway" {
   source = "./modules/api_gateway"
 
-  aws_region = var.aws_region
+  cluster_name   = module.eks.eks_cluster_name
+  vpc_id         = module.vpc.vpc_id
+  aws_region     = var.aws_region
+  aws_access_key = var.aws_access_key
+  aws_secret_key = var.aws_secret_key
+  aws_token_key  = var.aws_token_key
 
-  depends_on = [module.kube]
+  depends_on = [module.vpc, module.eks]
 }
 
 

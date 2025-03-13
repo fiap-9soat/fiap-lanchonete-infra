@@ -13,21 +13,10 @@ data "aws_lb" "fiap_lanchonete_nlb" {
   depends_on = [data.kubernetes_service.fiap_lanchonete_lb]
 }
 
-# Resource to wait to NLB to be active
-resource "null_resource" "wait_for_nlb" {
-  provisioner "local-exec" {
-    command = <<EOT
-      AWS_REGION=${var.aws_region} aws elbv2 wait load-balancer-available --load-balancer-arn ${data.aws_lb.fiap_lanchonete_nlb.arn}
-    EOT
-  }
-}
-
 # Create API Gateway VPC Link
 resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
   name = "fiap-lanchonete-vpc-link"
   target_arns = [data.aws_lb.fiap_lanchonete_nlb.arn]
-
-  depends_on = [null_resource.wait_for_nlb]
 }
 
 resource "aws_api_gateway_rest_api" "fiap_lanchonete_api" {
@@ -68,15 +57,14 @@ resource "aws_api_gateway_integration" "proxy_integration" {
 
 # Use Cognito as Authorization method for the API
 resource "aws_api_gateway_authorizer" "cognito_authorizer" {
-  name                   = "cognito-authorizer"
-  rest_api_id            = aws_api_gateway_rest_api.fiap_lanchonete_api.id
-  authorizer_uri         = "arn:aws:apigateway:${var.aws_region}:cognito-idp:action/Authorize"
-  identity_source        = "method.request.header.Authorization"
-  provider_arns          = data.aws_cognito_user_pools.cognito_user_pools.arns
-  type                   = "COGNITO_USER_POOLS"
+  name            = "cognito-authorizer"
+  rest_api_id     = aws_api_gateway_rest_api.fiap_lanchonete_api.id
+  authorizer_uri  = "arn:aws:apigateway:${var.aws_region}:cognito-idp:action/Authorize"
+  identity_source = "method.request.header.Authorization"
+  provider_arns   = data.aws_cognito_user_pools.cognito_user_pools.arns
+  type            = "COGNITO_USER_POOLS"
   depends_on = [data.aws_cognito_user_pools.cognito_user_pools]
 }
-
 
 
 # Deploy the API
