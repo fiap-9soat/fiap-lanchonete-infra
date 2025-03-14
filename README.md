@@ -107,3 +107,52 @@ Em caso de erro, verifique se o usuario executante tem permissões para criaçõ
 
 **Importante**: Caso seja a primeira "subida" do projeto, siga a ordem de execução
 especificada [aqui](#ordem-de-execução).
+
+## Erros comuns
+
+### AWS com LabRole
+
+Devido a natureza efêmera da instância de AWS utilizada pelo AWS Instructure, pode ser que você receba erros ao executar
+o
+`terraform plan` ou `terraform apply` depois da primeira execução.  
+Por esse motivo, recomendamos limpar o estado local do Terraform sempre que subir uma nova instância do AWS Lab.
+
+### Limpando estado local
+
+Na maioria das vezes, os erros são solucionados simplesmente limpando o estado local para remover referências a
+elementos
+que não existem mais.  
+Para isso, basta remover esses arquivos e diretórios da pasta raiz do repositório:
+
+```
+.terraform
+terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+```
+
+E em seguida re-iniciar os módulos:
+
+```shell
+terraform init
+```
+
+#### Error: Kubernetes cluster unreachable
+
+```
+╷
+│ Error: Kubernetes cluster unreachable: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable
+│ 
+│   with module.api_gateway.helm_release.aws_load_balancer_controller,
+│   on modules/api_gateway/0-load-balancer.tf line 2, in resource "helm_release" "aws_load_balancer_controller":
+│    2: resource "helm_release" "aws_load_balancer_controller" {
+│ 
+╵
+```
+
+Esse erro ocorre porque o Terraform tenta realizar uma conexão automatica com o cluster do Kubernetes (especificado nos
+providers `helm` e `kubernetes`)  
+e caso o cluster "suma" depois que o estado inicial é gerado, a conexão falha e consequentemente um erro é retornado no
+`plan`.
+A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#aplicar-configurações) a configuração.
+
