@@ -1,28 +1,3 @@
-# Deploy AWS Load Balancer Controller using Helm
-resource "helm_release" "aws_load_balancer_controller" {
-  name       = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  version    = "1.4.5"
-  wait       = true
-
-  set {
-    name  = "clusterName"
-    value = var.cluster_name
-  }
-
-  set {
-    name  = "region"
-    value = var.aws_region
-  }
-
-  set {
-    name  = "vpcId"
-    value = var.vpc_id
-  }
-}
-
 # Kubernetes Service with NLB annotations
 resource "kubernetes_service" "fiap_lanchonete_lb" {
   metadata {

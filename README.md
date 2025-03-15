@@ -25,25 +25,12 @@ a ordem de execução não é importante.
 
 ### Pre-requisitos
 
-Certifique-se de ter instalado uma versão recente da CLI do `terraform`.
+Certifique-se de ter instalado uma versão recente da CLI do `terraform` e do `aws`.
 
-### Autenticação com o Terraform HCP
+### Autenticação no AWS CLI
 
-Essa organização utiliza o Terraform HCP para compartilhamento de estado entre os repositórios.  
-Isso significa que é **obrigatório** realizar o login na plataforma para prosseguir com a instalação:
-https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
-
-### Criando uma organização e workspace
-
-No Painel do Terraform HCP, é importante copiar o nome da organização e o workspace alvo da configuração.  
-Esse passo é essencial, e os valores devem ser especificados nas variaveis de ambiente a seguir:
-
-```hcl
-hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
-hcp_workspace = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
-```
-
-Esse passo é obrigatório para **todos** os projetos de Terraform dessa organização.
+É necessário autenticar-se com o `AWS` para viabilizar o deploy desse projeto.  
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html
 
 ### Variaveis de ambiente
 
@@ -54,15 +41,12 @@ correspondente:
 ```hcl
 aws_access_key = "ASIAVEZQ3WJY2KR216362"
 aws_secret_key = "TU+qlmgcNsX5MQz1238214821748211"
-aws_token_key  = "12387218372185712887482173821849211299ddwq+Wp+JXsIYgo8GwFKk7Ms6y7wmGc9J1CqCJ1dAiALfo+D+BERHahJ1CpswGvC0BZah/cF7XIfZNgrxpIbLiq9AghgEAEaDDM1MzkwMDQwOTQ1NyIM5y1D/eAy2LhTThABKpoCER68KmMdcDD57aDTEC8KjfdDsLcco3EN8HfrspVnBAWXhQxMT3bF4aVVusYwMTbjKA4wBb1AK34SohcvbMQvKX+iIZGsIm7CkuMkIZsUeto9bDkwHq7P6e2ctJvUUf4khVv9armJYpqdb7sytoqfjRbYxU8WIgXXRaodcpxxusX1KkzP2DWBb5wKBQy/Cv8c0uiUKL1WtfTobjEZj5eEV9Kjf4GtXvjrfS0QU/eLs6kvsrEiQU6+ZCMeDdvAfWIEritAMFSUEaVDDsPn8uq7CJ0LWbcTB6qHMkP9l4PFMIZiNNQPycS79+4X/2T85jc+QIX4hZDMDrTm5lMmY4Ya5q0y8jxZQMsMbNkEL2JfP9pklquyMT0oQdUOMMLS/L0GOp4Bd6Y8K1rgPaKQkveh74WrGZHa+VNO5V24vSLiTnHr4F/fJFD/ZMz6nBRlwQbX3wUQxAujUPLKDAzF4oEvPzu69L09Q9msZTzFJMVNS/1mwFSqkxRtDjl+SejFFAm55be2YPwpb7qFOy+KFmPj3zlTe8+8Grnk7HjabAukdmAjlXpG3Q/ClJyQ2nc1skl5RHCXkBDG3wQdlj7DorTtHcw="
-hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
-hcp_workspace  = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
+aws_token_key  = "123872183721857128............."
 ```
 
 _Atenção: essas credenciais são inválidas, e servem apenas como exemplo. Você deve obter as credenciais corretas do
 próprio ambiente da AWS. Todas as variáveis são obrigatórias._
 
-Caso você utilize o `AWS CLI`, os parametros no arquivo `~/.aws/credentials` podem ser utilizados para autenticação.
 A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terraform com as presentes no arquivo
 `~/.aws/credentials`.
 
@@ -103,12 +87,15 @@ Para aplicar as alterações, basta rodar o seguinte comando e inserir 'yes' qua
 terraform apply
 ```
 
-Em caso de erro, verifique se o usuario executante tem permissões para criações de instâncias do AWS RDS, VPC e Subnets.
+## Erros comuns
 
 **Importante**: Caso seja a primeira "subida" do projeto, siga a ordem de execução
 especificada [aqui](#ordem-de-execução).
 
-## Erros comuns
+### Permissões
+
+Verifique se o usuario executante tem permissões para criações de instâncias do AWS EKS, AWS EKS NodeGroups, VPC e
+Subnets.
 
 ### AWS com LabRole
 
@@ -131,7 +118,7 @@ terraform.tfstate
 terraform.tfstate.backup
 ```
 
-E em seguida re-iniciar os módulos:
+E em seguida reiniciar os módulos:
 
 ```shell
 terraform init
@@ -156,3 +143,19 @@ e caso o cluster "suma" depois que o estado inicial é gerado, a conexão falha 
 `plan`.
 A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#aplicar-configurações) a configuração.
 
+#### Error: Search returned 0 results, please revise so only one is returned
+
+```
+│ Error: Search returned 0 results, please revise so only one is returned
+│
+│   with module.api_gateway.data.aws_lb.fiap_lanchonete_nlb,
+│   on modules/api_gateway/main.tf line 12, in data "aws_lb" "fiap_lanchonete_nlb":
+│   12: data "aws_lb" "fiap_lanchonete_nlb" {
+│
+╵
+```
+
+Esse erro pode acontecer devido a necessidade do `NLB`, componente do `AWS Load Balancer`, estar como `READY`
+antes da configuração do `API Gateway`.  
+A solução é aguardar alguns minutos antes de re-executar o comando `terraform apply` para garantir a finalização
+da subida.
