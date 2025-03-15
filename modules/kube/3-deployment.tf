@@ -39,10 +39,9 @@ resource "kubernetes_deployment" "fiap_lanchonete_deployment" {
               name = kubernetes_secret.mercado_pago_secret.metadata[0].name
             }
           }
-          # TODO: Pegar URL do banco com data
           env {
             name  = "DB_URL"
-            value = "mysql:3306"
+            value = var.mysql_url
           }
         }
       }

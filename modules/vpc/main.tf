@@ -14,7 +14,6 @@ locals {
   private_subnet_names = [for k, v in local.availability_zone_names : cidrsubnet(local.vpc_cidr, 8, k)]
   public_subnet_names  = [for k, v in local.availability_zone_names : cidrsubnet(local.vpc_cidr, 8, k + 4)]
   tags = {
-    Example    = local.name
     GithubRepo = "fiap-lanchonete-infra"
     GithubOrg  = "fiap-9soat"
   }

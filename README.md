@@ -39,9 +39,12 @@ Para ambiente local, basta utilizar o arquivo `dev.auto.tfvars.example` como exe
 correspondente:
 
 ```hcl
-aws_access_key = "ASIAVEZQ3WJY2KR216362"
-aws_secret_key = "TU+qlmgcNsX5MQz1238214821748211"
-aws_token_key  = "123872183721857128............."
+aws_access_key       = "ASIAVEZQ3WJY2KR216362"
+aws_secret_key       = "TU+qlmgcNsX5MQz1238214821748211"
+aws_token_key        = "123872183721857128............."
+db_username = "fiap" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
+db_password = "fiap-lanchonete" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
+mercado_pago_api_key = "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
 ```
 
 _Atenção: essas credenciais são inválidas, e servem apenas como exemplo. Você deve obter as credenciais corretas do
@@ -102,7 +105,8 @@ Subnets.
 Devido a natureza efêmera da instância de AWS utilizada pelo AWS Instructure, pode ser que você receba erros ao executar
 o
 `terraform plan` ou `terraform apply` depois da primeira execução.  
-Por esse motivo, recomendamos limpar o estado local do Terraform sempre que subir uma nova instância do AWS Lab.
+Por esse motivo, recomendamos [limpar o estado local](#limpando-estado-local) do 
+Terraform sempre que subir uma nova instância do AWS Lab.
 
 ### Limpando estado local
 
@@ -156,6 +160,5 @@ A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#a
 ```
 
 Esse erro pode acontecer devido a necessidade do `NLB`, componente do `AWS Load Balancer`, estar como `READY`
-antes da configuração do `API Gateway`.  
-A solução é aguardar alguns minutos antes de re-executar o comando `terraform apply` para garantir a finalização
-da subida.
+antes da configuração do `API Gateway`. Isso também pode acontecer caso você não esteja corretamente autenticado na `AWS CLI`.  
+A solução é garantir que a autenticação do `AWS CLI` esteja valida, e executar o comando `terraform apply`.

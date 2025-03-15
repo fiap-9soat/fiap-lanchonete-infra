@@ -1,29 +1,31 @@
-variable "cluster_name" {
-  description = "EKS Cluster Name"
-  type        = string
-}
-
-variable "aws_region" {
-  description = "AWS Region"
-  type        = string
-}
-
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
+variable "mysql_url" {
+  type = string
 }
 
 variable "mysql_username" {
   sensitive = true
-  type = string
+  type      = string
 }
 
 variable "mysql_password" {
   sensitive = true
-  type = string
+  type      = string
 }
 
 variable "mercado_pago_api_key" {
   sensitive = true
+  type      = string
+}
+
+variable "cluster_name" {
+  type = string
+}
+
+variable "aws_region" {
+  type = string
+  default = "us-east-1"
+}
+
+variable "vpc_id" {
   type = string
 }
