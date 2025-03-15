@@ -2,17 +2,6 @@ name: Trigger Target Workflow
 
 on:
   workflow_dispatch:
-    secrets:
-      EKS_CLUSTER_NAME:
-        require: true
-      AWS_REGION:
-        require: true
-      AWS_ACCESS_KEY_ID:
-        require: true
-      AWS_SECRET_ACCESS_KEY:
-        require: true
-      AWS_SESSION_TOKEN:
-        require: true
     inputs:
       target_service:
         description: "Input a service name (e.g., demo-app)"
@@ -35,7 +24,7 @@ jobs:
           aws_access_key: "${{ secrets.AWS_ACCESS_KEY }}"
           aws_secret_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           aws_token_key: "${{ secrets.AWS_SESSION_TOKEN }}"
-          aws_region: "${{ secrets.AWS_REGION }}"
+          aws_region: ${{ secrets.AWS_REGION }}
           eks_cluster_name: "${{ secrets.EKS_CLUSTER_NAME }}"
         #   client-payload: '{"github_token": "${{ secrets.PAT }}", "aws_access_key": "${{ secrets.AWS_ACCESS_KEY }}", "aws_secret_key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws_token_key": "${{ secrets.AWS_SESSION_TOKEN }}", "aws_region": "${{ secrets.AWS_REGION }}", "eks_cluster_name": "${{ secrets.EKS_CLUSTER_NAME }}"}'
       - run: |
