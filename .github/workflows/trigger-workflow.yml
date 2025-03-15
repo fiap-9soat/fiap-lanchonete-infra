@@ -2,6 +2,7 @@ name: Trigger Target Workflow
 
 on:
   workflow_dispatch:
+    secrets: inherit
     inputs:
       target_service:
         description: "Input a service name (e.g., demo-app)"
@@ -13,7 +14,6 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-    secrets: inherit
 
     steps:
       - name: Trigger Workflow in Another Repository
