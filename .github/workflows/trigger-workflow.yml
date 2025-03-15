@@ -2,7 +2,8 @@ name: Trigger Target Workflow
 
 on:
   workflow_dispatch:
-    secrets: inherit
+    secrets:
+      inherit: true
     inputs:
       target_service:
         description: "Input a service name (e.g., demo-app)"
