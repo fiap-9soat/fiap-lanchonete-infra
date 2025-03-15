@@ -27,7 +27,7 @@ jobs:
           repo_owner="daftK" 
           repo_name="fiap-lanchonete"  
           event_type="trigger-workflow" 
-          service=${{ github.event.inputs.target_service }}"
+          service="${{ github.event.inputs.target_service }}"
           version="${{ github.event.inputs.target_version }}"
 
           curl -L \
