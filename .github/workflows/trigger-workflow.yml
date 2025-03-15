@@ -11,11 +11,12 @@ on:
         required: true
 
 jobs:
-  call-lanchonete-api:
-    uses: daftK/fiap-lanchonete/.github/workflows/target-workflow.yml@develop
-    with:
-      message: "Hello from the main workflow!
-    secrets: inherit
+  trigger:
+    call-lanchonete-api:
+        uses: daftK/fiap-lanchonete/.github/workflows/target-workflow.yml@develop
+        with:
+        message: "Hello from the main workflow!
+        secrets: inherit
 #   call-lanchonete-db:
 #     uses: fiap-9soat/fiap-lanchonete/.github/workflows/target-workflow.yml@develop
 #     with:
