@@ -32,7 +32,11 @@ jobs:
           token: ${{ secrets.PAT }}
           repository: fiap-9soat/fiap-lanchonete-db
           event-type: my-event
-          client-payload: '{"github_token": "${{ secrets.PAT }}", "aws_access_key": "${{ secrets.AWS_ACCESS_KEY }}", "aws_secret_key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws_token_key": "${{ secrets.AWS_SESSION_TOKEN }}", "aws_region": "${{ secrets.AWS_REGION }}", "eks_cluster_name": "${{ secrets.EKS_CLUSTER_NAME }}"}'
+          aws_access_key: "${{ secrets.AWS_ACCESS_KEY }}"
+          aws_region: "${{ secrets.AWS_REGION }}"
+          eks_cluster_name: "${{ secrets.EKS_CLUSTER_NAME }}"
+        secrets: inherit
+        #   client-payload: '{"github_token": "${{ secrets.PAT }}", "aws_access_key": "${{ secrets.AWS_ACCESS_KEY }}", "aws_secret_key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws_token_key": "${{ secrets.AWS_SESSION_TOKEN }}", "aws_region": "${{ secrets.AWS_REGION }}", "eks_cluster_name": "${{ secrets.EKS_CLUSTER_NAME }}"}'
       - run: |
           # Set the required variables
           repo_owner="daftK" 
