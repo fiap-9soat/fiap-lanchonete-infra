@@ -14,8 +14,8 @@ jobs:
   trigger-job:
     runs-on: ubuntu-latest
     steps:
-    - name: Perform trigger steps
-      run: echo "Trigger job is setting things up!"
+      - name: Perform trigger steps
+        run: echo "Trigger job is setting things up!"
 
   call-lanchonete-api:
     needs: trigger-job
