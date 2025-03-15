@@ -19,7 +19,7 @@ jobs:
 
   call-lanchonete-api:
     needs: trigger-job
-    uses: daftK/fiap-lanchonete/.github/workflows/target-workflow.yml@develop
+    uses: fiap-9soat/fiap-lanchonete/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
     secrets: inherit
