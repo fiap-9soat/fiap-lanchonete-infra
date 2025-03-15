@@ -19,7 +19,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
-          repository: daftK/fiap-lanchonete-infra
           client-payload: '{"github_token": "${{ secrets.PAT }}", "aws_access_key": "${{ secrets.AWS_ACCESS_KEY }}", "aws_secret_key": "${{ secrets.AWS_SECRET_ACCESS_KEY}}", "aws_token_key": "${{ secrets.AWS_SESSION_TOKEN}}"}'
       - run: |
           # Set the required variables
