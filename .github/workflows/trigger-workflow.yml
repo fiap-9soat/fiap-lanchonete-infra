@@ -21,14 +21,14 @@ jobs:
     secrets: inherit
 
   call-lanchonete-infra:
-    needs: trigger-job
+    needs: call-lanchonete-auth
     uses: fiap-9soat/fiap-lanchonete-infra/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
     secrets: inherit
 
   call-lanchonete-api:
-    needs: call-lanchonete-auth
+    needs: call-lanchonete-infra
     # needs: [trigger-job, terraform-main]
     uses: fiap-9soat/fiap-lanchonete/.github/workflows/target-workflow.yml@dev
     with:
