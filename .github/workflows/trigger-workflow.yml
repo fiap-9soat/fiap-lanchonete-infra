@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-#   TF_VAR_GITHUB_TOKEN: ${{ secrets.PAT }}
   TF_ACTION_WORKING_DIR: "terraform"
   TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
   TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
