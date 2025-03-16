@@ -13,9 +13,14 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.PAT }}
   TF_ACTION_WORKING_DIR: "terraform"
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }} | base64 --decode
+  aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+  aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  aws_token_key: ${{ secrets.AWS_SESSION_TOKEN }} | base64 --decode
+  aws_region: ${{ secrets.AWS_REGION }}
+  db_url: ${{ secrets.DB_URL }}
+  db_username: ${{ secrets.DB_USERNAME }}
+  db_password: ${{ secrets.DB_PASSWORD }}
+  mercado_pago_api_key: ${{ secrets.MERCADO_PAGO_API_KEY }}
 
 jobs:
   trigger-job:
