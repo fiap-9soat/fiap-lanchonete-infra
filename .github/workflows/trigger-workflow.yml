@@ -21,16 +21,22 @@ jobs:
       - name: Perform trigger steps
         run: echo "Trigger job is setting things up!"
 
-  lanchonete-infra-init:
+  call-lanchonete-auth:
     needs: trigger-job
-    name: "Terraform Init"
+    uses: fiap-9soat/fiap-lanchonete-auth/.github/workflows/target-workflow.yml@main
+    with:
+      message: "Hello from the main workflow!"
+
+  lanchonete-infra:
+    needs: call-lanchonete-auth
+    name: "Terraform Infrastructure Change Management"
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         # We keep Terraform files in the terraform directory.
         working-directory: .
-  
+
     steps:
       - name: Checkout the repository to the runner
         uses: actions/checkout@v2
@@ -44,23 +50,6 @@ jobs:
         id: init
         run: terraform init
 
-  call-lanchonete-auth:
-    needs: lanchonete-infra-init
-    uses: fiap-9soat/fiap-lanchonete-auth/.github/workflows/target-workflow.yml@main
-    with:
-      message: "Hello from the main workflow!"
-    secrets: inherit
-
-  lanchonete-infra:
-    needs: call-lanchonete-auth
-    name: "Terraform Infrastructure Change Management"
-    runs-on: ubuntu-latest
-    defaults:
-        run:
-            shell: bash
-            # We keep Terraform files in the terraform directory.
-            working-directory: .
-    steps:
       - name: Terraform plan
         run: terraform plan -no-color -input=false
         continue-on-error: true
