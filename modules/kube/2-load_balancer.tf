@@ -47,3 +47,4 @@ resource "kubernetes_service" "fiap_lanchonete_lb" {
     type = "LoadBalancer"
   }
 }
+

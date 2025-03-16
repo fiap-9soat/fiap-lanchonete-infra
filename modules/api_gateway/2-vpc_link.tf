@@ -26,6 +26,7 @@ resource "null_resource" "wait_for_nlb" {
 resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
   name  = "fiap-lanchonete-vpc-link"
   target_arns = [data.aws_lb.fiap_lanchonete_nlb.arn]
+  depends_on = [null_resource.wait_for_nlb]
 }
 
 # Define integration with the backend via VPC Link
@@ -37,7 +38,7 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   uri                     = "http://${data.aws_lb.fiap_lanchonete_nlb.dns_name}/{proxy}"
   integration_http_method = "ANY"
   connection_type         = "VPC_LINK"
-  connection_id           = "$${stageVariables.vpc_link_id}" //weird, but correct syntax!
+  connection_id           = aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link.id
   passthrough_behavior    = "WHEN_NO_MATCH"
 
   depends_on = [aws_api_gateway_method.any_method, aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link]

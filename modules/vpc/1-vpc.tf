@@ -19,5 +19,7 @@ module "vpc" {
   enable_dns_support           = true
   create_database_subnet_group = false
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "fiap-lanchonete-vpc-1"
+  })
 }

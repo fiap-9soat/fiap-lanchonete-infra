@@ -20,7 +20,7 @@ resource "kubernetes_deployment" "fiap_lanchonete_deployment" {
       spec {
         container {
           name  = "fiap-lanchonete"
-          image = "lamarcke/fiap-lanchonete:1.0.2.1"
+          image = "lamarcke/fiap-lanchonete:1.0.6"
           port {
             container_port = 8080
           }
