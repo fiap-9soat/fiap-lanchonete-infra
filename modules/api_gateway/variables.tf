@@ -4,14 +4,6 @@ variable "cognito_user_pool_name" {
   default     = "fiap-user-pool"
 }
 
-variable "cluster_name" {
-  type = string
-}
-
-variable "vpc_id" {
-  type = string
-}
-
 variable "aws_region" {
   type        = string
   description = "The region in which the resources will be created"

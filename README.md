@@ -25,25 +25,12 @@ a ordem de execução não é importante.
 
 ### Pre-requisitos
 
-Certifique-se de ter instalado uma versão recente da CLI do `terraform`.
+Certifique-se de ter instalado uma versão recente da CLI do `terraform` e do `aws`.
 
-### Autenticação com o Terraform HCP
+### Autenticação no AWS CLI
 
-Essa organização utiliza o Terraform HCP para compartilhamento de estado entre os repositórios.  
-Isso significa que é **obrigatório** realizar o login na plataforma para prosseguir com a instalação:
-https://developer.hashicorp.com/terraform/tutorials/cloud-get-started/cloud-login
-
-### Criando uma organização e workspace
-
-No Painel do Terraform HCP, é importante copiar o nome da organização e o workspace alvo da configuração.  
-Esse passo é essencial, e os valores devem ser especificados nas variaveis de ambiente a seguir:
-
-```hcl
-hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
-hcp_workspace = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
-```
-
-Esse passo é obrigatório para **todos** os projetos de Terraform dessa organização.
+É necessário autenticar-se com o `AWS` para viabilizar o deploy desse projeto.  
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html
 
 ### Variaveis de ambiente
 
@@ -52,17 +39,17 @@ Para ambiente local, basta utilizar o arquivo `dev.auto.tfvars.example` como exe
 correspondente:
 
 ```hcl
-aws_access_key = "ASIAVEZQ3WJY2KR216362"
-aws_secret_key = "TU+qlmgcNsX5MQz1238214821748211"
-aws_token_key  = "12387218372185712887482173821849211299ddwq+Wp+JXsIYgo8GwFKk7Ms6y7wmGc9J1CqCJ1dAiALfo+D+BERHahJ1CpswGvC0BZah/cF7XIfZNgrxpIbLiq9AghgEAEaDDM1MzkwMDQwOTQ1NyIM5y1D/eAy2LhTThABKpoCER68KmMdcDD57aDTEC8KjfdDsLcco3EN8HfrspVnBAWXhQxMT3bF4aVVusYwMTbjKA4wBb1AK34SohcvbMQvKX+iIZGsIm7CkuMkIZsUeto9bDkwHq7P6e2ctJvUUf4khVv9armJYpqdb7sytoqfjRbYxU8WIgXXRaodcpxxusX1KkzP2DWBb5wKBQy/Cv8c0uiUKL1WtfTobjEZj5eEV9Kjf4GtXvjrfS0QU/eLs6kvsrEiQU6+ZCMeDdvAfWIEritAMFSUEaVDDsPn8uq7CJ0LWbcTB6qHMkP9l4PFMIZiNNQPycS79+4X/2T85jc+QIX4hZDMDrTm5lMmY4Ya5q0y8jxZQMsMbNkEL2JfP9pklquyMT0oQdUOMMLS/L0GOp4Bd6Y8K1rgPaKQkveh74WrGZHa+VNO5V24vSLiTnHr4F/fJFD/ZMz6nBRlwQbX3wUQxAujUPLKDAzF4oEvPzu69L09Q9msZTzFJMVNS/1mwFSqkxRtDjl+SejFFAm55be2YPwpb7qFOy+KFmPj3zlTe8+8Grnk7HjabAukdmAjlXpG3Q/ClJyQ2nc1skl5RHCXkBDG3wQdlj7DorTtHcw="
-hcp_org = "fiap-lanchonete" # Nome da organização no Terraform HCP
-hcp_workspace  = "lanchonete-infra-2" # Nome da workspace pertencente a organização no Terraform HCP
+aws_access_key       = "ASIAVEZQ3WJY2KR216362"
+aws_secret_key       = "TU+qlmgcNsX5MQz1238214821748211"
+aws_token_key        = "123872183721857128............."
+db_url = "mysql:3306" # recebido APÓS a subida do RDS, altere assim que finalizar o deploy do fiap-lanchonete-db (AWS RDS).
+db_username = "fiap" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
+db_password = "fiap-lanchonete" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
+mercado_pago_api_key = "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
 ```
-
 _Atenção: essas credenciais são inválidas, e servem apenas como exemplo. Você deve obter as credenciais corretas do
 próprio ambiente da AWS. Todas as variáveis são obrigatórias._
 
-Caso você utilize o `AWS CLI`, os parametros no arquivo `~/.aws/credentials` podem ser utilizados para autenticação.
 A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terraform com as presentes no arquivo
 `~/.aws/credentials`.
 
@@ -103,7 +90,93 @@ Para aplicar as alterações, basta rodar o seguinte comando e inserir 'yes' qua
 terraform apply
 ```
 
-Em caso de erro, verifique se o usuario executante tem permissões para criações de instâncias do AWS RDS, VPC e Subnets.
+### Após subida do RDS
+É de extrema importância que você altere as variaveis relacionadas ao banco de dados **APÓS** a subida do RDS.  
+_Esse passo normalmente só é necessário durante a subida inicial, a não ser que as credenciais sejam alteradas manualmente._  
+Altere as seguintes variaveis para os valores especificados no [fiap-lanchonete-db](https://github.com/fiap-9soat/fiap-lanchonete-db), 
+em especial o `db_url`, que só é obtido após a subida da instância.
+```hcl
+
+```
+
+## Erros comuns
 
 **Importante**: Caso seja a primeira "subida" do projeto, siga a ordem de execução
 especificada [aqui](#ordem-de-execução).
+
+### Permissões
+
+Verifique se o usuario executante tem permissões para criações de instâncias do AWS EKS, AWS EKS NodeGroups, VPC e
+Subnets.
+
+### AWS com LabRole
+
+Devido a natureza efêmera da instância de AWS utilizada pelo AWS Instructure, pode ser que você receba erros ao executar
+o
+`terraform plan` ou `terraform apply` depois da primeira execução.  
+Por esse motivo, recomendamos [limpar o estado local](#limpando-estado-local) do 
+Terraform sempre que subir uma nova instância do AWS Lab.
+
+### Limpando estado local
+
+Na maioria das vezes, os erros são solucionados simplesmente limpando o estado local para remover referências a
+elementos
+que não existem mais.  
+Para isso, basta remover esses arquivos e diretórios da pasta raiz do repositório:
+
+```
+.terraform
+terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+```
+
+E em seguida reiniciar os módulos:
+
+```shell
+terraform init
+```
+
+#### Error: Kubernetes cluster unreachable
+
+```
+╷
+│ Error: Kubernetes cluster unreachable: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable
+│ 
+│   with module.api_gateway.helm_release.aws_load_balancer_controller,
+│   on modules/api_gateway/0-load-balancer.tf line 2, in resource "helm_release" "aws_load_balancer_controller":
+│    2: resource "helm_release" "aws_load_balancer_controller" {
+│ 
+╵
+```
+
+Esse erro ocorre porque o Terraform tenta realizar uma conexão automatica com o cluster do Kubernetes (especificado nos
+providers `helm` e `kubernetes`)  
+e caso o cluster "suma" depois que o estado inicial é gerado, a conexão falha e consequentemente um erro é retornado no
+`plan`.
+A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#aplicar-configurações) a configuração.
+
+#### Error: Search returned 0 results, please revise so only one is returned
+
+```
+│ Error: Search returned 0 results, please revise so only one is returned
+│
+│   with module.api_gateway.data.aws_lb.fiap_lanchonete_nlb,
+│   on modules/api_gateway/main.tf line 12, in data "aws_lb" "fiap_lanchonete_nlb":
+│   12: data "aws_lb" "fiap_lanchonete_nlb" {
+│
+╵
+```
+
+Esse erro pode acontecer devido a necessidade do `NLB`, componente do `AWS Load Balancer`, estar como `READY`
+antes da configuração do `API Gateway`. Isso também pode acontecer caso você não esteja corretamente autenticado na `AWS CLI`.  
+A solução é garantir que a autenticação do `AWS CLI` esteja valida, e executar o comando `terraform apply`.
+
+#### Error: error deleting API Gateway VPC Link (ox6a0g): BadRequestException: Cannot delete vpc link.
+```
+Error: error deleting API Gateway VPC Link (ox6a0g): BadRequestException: Cannot delete vpc link. Vpc link 'ox6a0g', is referenced in [ANY:kx106x:dev] in format of [Method:Resource:Stage].
+```
+Esse é um erro ocasionado pela exigência do provedor de Terraform AWS de destruir e recriar as entidades relacionadas ao API Gateway.  
+Caso aconteça, a única forma de resolver é excluindo o VPC Link e os itens relacionados ao API Gateway diretamente do dashboard  
+da AWS, incluindo as informações do Cloudfront.
+Fonte: https://github.com/hashicorp/terraform-provider-aws/issues/12195

@@ -5,7 +5,6 @@ resource "helm_release" "aws_load_balancer_controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   version    = "1.4.5"
-  wait       = true
 
   set {
     name  = "clusterName"
@@ -48,3 +47,4 @@ resource "kubernetes_service" "fiap_lanchonete_lb" {
     type = "LoadBalancer"
   }
 }
+

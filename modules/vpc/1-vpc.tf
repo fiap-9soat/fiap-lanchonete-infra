@@ -3,8 +3,7 @@
 ################################################################################
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-  #   source  = "../../"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
 
   name = local.name
@@ -20,5 +19,7 @@ module "vpc" {
   enable_dns_support           = true
   create_database_subnet_group = false
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "fiap-lanchonete-vpc-1"
+  })
 }
