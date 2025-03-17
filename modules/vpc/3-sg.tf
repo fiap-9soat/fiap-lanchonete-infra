@@ -5,8 +5,8 @@ resource "aws_security_group" "eks" {
 
   ingress {
     description = "TLS from VPC"
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = [module.vpc.vpc_cidr_block]
   }
