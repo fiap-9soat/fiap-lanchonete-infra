@@ -43,6 +43,10 @@ resource "kubernetes_deployment" "fiap_lanchonete_deployment" {
             name  = "DB_URL"
             value = var.mysql_url
           }
+          env {
+            name  = "ID_CONTA"
+            value = var.mercado_pago_id_conta
+          }
         }
       }
     }
