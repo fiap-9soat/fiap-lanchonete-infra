@@ -34,9 +34,6 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     name: Apply terraform plan
-    defaults:
-      run:
-        working-directory: ./infra
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
