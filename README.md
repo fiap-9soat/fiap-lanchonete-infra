@@ -3,6 +3,25 @@
 Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
 principal do projeto.
 
+## Temp
+
+gh auth login
+colocar credenciais da org
+gh workflow run trigger-workflow.yml
+gh workflow run trigger-workflow.yml --ref develop
+
+AWS_ACCESS_KEY=
+AWS_SECRET_ACCESS_KEY=
+AWS_SESSION_TOKEN= codificado em BASE64 devido aos caracteres especiais
+AWS_REGION=us-east-1
+DB_USERNAME=fiap
+DB_PASSWORD=fiap_password
+DB_URL=mysql:3306
+DOCKER_PASSWORD=
+DOCKER_USERNAME=
+MERCADO_PAGO_API_KEY=
+PAT=
+
 ## Ordem de execução
 
 A maioria dos projetos nessa organização exporta e importa estados no backend compartilhado do Terraform (utilizando
@@ -17,7 +36,7 @@ fiap-lanchonete-db
 
 **Importante**: esse passo só é necessário caso você esteja "subindo" o projeto pela primeira vez,
 como em uma troca de organização do HCP ou troca de conta do AWS.
-Essa ordem garante que os projetos exportarão as variaveis necessárias no backend compartilhado corretamente.    
+Essa ordem garante que os projetos exportarão as variaveis necessárias no backend compartilhado corretamente.  
 Nos demais casos (como CI/CD, execuções do `terraform apply` posteriores),
 a ordem de execução não é importante.
 
@@ -65,7 +84,7 @@ A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terrafor
 `~/.aws/credentials`.
 
 | tfvars         | ~/.aws/credentials    |
-|----------------|-----------------------|
+| -------------- | --------------------- |
 | aws_access_key | aws_access_key_id     |
 | aws_secret_key | aws_secret_access_key |
 | aws_token_key  | aws_session_token     |
@@ -157,11 +176,11 @@ terraform init
 ```
 ╷
 │ Error: Kubernetes cluster unreachable: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable
-│ 
+│
 │   with module.api_gateway.helm_release.aws_load_balancer_controller,
 │   on modules/api_gateway/0-load-balancer.tf line 2, in resource "helm_release" "aws_load_balancer_controller":
 │    2: resource "helm_release" "aws_load_balancer_controller" {
-│ 
+│
 ╵
 ```
 
@@ -207,7 +226,7 @@ Fonte: https://github.com/hashicorp/terraform-provider-aws/issues/12195
 ```
 ╷
 │ Error: waiting for API Gateway VPC Link (jwqd3s) create: unexpected state 'FAILED', wanted target 'AVAILABLE'. last error: NLB is already associated with another VPC Endpoint Service
-│ 
+│
 │   with module.api_gateway.aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link,
 │   on modules/api_gateway/2-vpc_link.tf line 14, in resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link":
 │   14: resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
@@ -216,4 +235,4 @@ Fonte: https://github.com/hashicorp/terraform-provider-aws/issues/12195
 Este erro pode ocorrer durante a re-criação do VPC link, afirmando que o LoadBalancer do VPC já está associado a outro
 recurso.  
 Infelizmente, a unica maneira de resolver é desassociar manualmente o recurso pela interface do AWS ou pelo `AWS CLI`:  
-https://repost.aws/knowledge-center/elb-fix-nlb-associated-with-service   
+https://repost.aws/knowledge-center/elb-fix-nlb-associated-with-service
