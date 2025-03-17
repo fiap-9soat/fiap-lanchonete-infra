@@ -4,8 +4,9 @@ resource "kubernetes_secret" "mysql_secret" {
     namespace = "default"
   }
   data = {
-    username = base64encode(var.mysql_username)
-    password = base64encode(var.mysql_password)
+    MYSQL_USER = base64encode(var.mysql_username)
+    MYSQL_PASSWORD = base64encode(var.mysql_password)
+    MYSQL_ROOT_PASSWORD = base64encode(var.mysql_password)
   }
   type = "Opaque"
 }
@@ -16,7 +17,9 @@ resource "kubernetes_secret" "mercado_pago_secret" {
     namespace = "default"
   }
   data = {
-    api_key = base64encode(var.mercado_pago_api_key)
+    MERCADO_PAGO_API_KEY = base64encode(var.mercado_pago_api_key)
+    ID_LOJA = base64encode(var.mercado_pago_id_loja)
+    ID_CONTA = base64encode(var.mercado_pago_id_conta)
   }
   type = "Opaque"
 }

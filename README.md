@@ -39,16 +39,27 @@ Para ambiente local, basta utilizar o arquivo `dev.auto.tfvars.example` como exe
 correspondente:
 
 ```hcl
-aws_access_key       = "ASIAVEZQ3WJY2KR216362"
-aws_secret_key       = "TU+qlmgcNsX5MQz1238214821748211"
-aws_token_key        = "123872183721857128............."
+aws_access_key        = "ASIAVEZQ3WJY2KR216362"
+aws_secret_key        = "TU+qlmgcNsX5MQz1238214821748211"
+aws_token_key         = "123872183721857128............."
 db_url = "mysql:3306" # recebido APÓS a subida do RDS, altere assim que finalizar o deploy do fiap-lanchonete-db (AWS RDS).
 db_username = "fiap" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
 db_password = "fiap-lanchonete" # correspondente ao valor especificado no fiap-lanchonete-db (AWS RDS)
-mercado_pago_api_key = "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
+mercado_pago_api_key  = "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
+mercado_pago_id_loja  = "1B2D92F23"
+mercado_pago_id_conta = "662144664"
 ```
-_Atenção: essas credenciais são inválidas, e servem apenas como exemplo. Você deve obter as credenciais corretas do
-próprio ambiente da AWS. Todas as variáveis são obrigatórias._
+
+_Atenção: essas credenciais são inválidas (exceto as relacionadas ao MercadoPago), e servem apenas como exemplo.
+Você deve obter as credenciais corretas do próprio ambiente da AWS. Todas as variáveis são obrigatórias._
+
+Para ambientes de teste, pode-se utilizar essas variaveis relacionadas ao MercadoPago:
+
+```hcl
+mercado_pago_api_key  = "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
+mercado_pago_id_loja  = "1B2D92F23"
+mercado_pago_id_conta = "662144664"
+```
 
 A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terraform com as presentes no arquivo
 `~/.aws/credentials`.
@@ -91,12 +102,16 @@ terraform apply
 ```
 
 ### Após subida do RDS
-É de extrema importância que você altere as variaveis relacionadas ao banco de dados **APÓS** a subida do RDS.  
-_Esse passo normalmente só é necessário durante a subida inicial, a não ser que as credenciais sejam alteradas manualmente._  
-Altere as seguintes variaveis para os valores especificados no [fiap-lanchonete-db](https://github.com/fiap-9soat/fiap-lanchonete-db), 
-em especial o `db_url`, que só é obtido após a subida da instância.
-```hcl
 
+É de extrema importância que você altere as variaveis relacionadas ao banco de dados **APÓS** a subida do RDS.  
+_Esse passo normalmente só é necessário durante a subida inicial, exceto se as credenciais forem alteradas
+manualmente._  
+Altere as seguintes variaveis para os valores especificados
+no [fiap-lanchonete-db](https://github.com/fiap-9soat/fiap-lanchonete-db),
+em especial o `db_url`, que só é obtido após a subida da instância.
+
+```hcl
+db_url = "fiap-lanchonete-db.cgreghhtfwd5.us-east-1.rds.amazonaws.com"
 ```
 
 ## Erros comuns
@@ -114,7 +129,7 @@ Subnets.
 Devido a natureza efêmera da instância de AWS utilizada pelo AWS Instructure, pode ser que você receba erros ao executar
 o
 `terraform plan` ou `terraform apply` depois da primeira execução.  
-Por esse motivo, recomendamos [limpar o estado local](#limpando-estado-local) do 
+Por esse motivo, recomendamos [limpar o estado local](#limpando-estado-local) do
 Terraform sempre que subir uma nova instância do AWS Lab.
 
 ### Limpando estado local
@@ -169,14 +184,35 @@ A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#a
 ```
 
 Esse erro pode acontecer devido a necessidade do `NLB`, componente do `AWS Load Balancer`, estar como `READY`
-antes da configuração do `API Gateway`. Isso também pode acontecer caso você não esteja corretamente autenticado na `AWS CLI`.  
+antes da configuração do `API Gateway`. Isso também pode acontecer caso você não esteja corretamente autenticado na
+`AWS CLI`.  
 A solução é garantir que a autenticação do `AWS CLI` esteja valida, e executar o comando `terraform apply`.
 
 #### Error: error deleting API Gateway VPC Link (ox6a0g): BadRequestException: Cannot delete vpc link.
+
 ```
 Error: error deleting API Gateway VPC Link (ox6a0g): BadRequestException: Cannot delete vpc link. Vpc link 'ox6a0g', is referenced in [ANY:kx106x:dev] in format of [Method:Resource:Stage].
 ```
-Esse é um erro ocasionado pela exigência do provedor de Terraform AWS de destruir e recriar as entidades relacionadas ao API Gateway.  
-Caso aconteça, a única forma de resolver é excluindo o VPC Link e os itens relacionados ao API Gateway diretamente do dashboard  
+
+Esse é um erro ocasionado pela exigência do provedor de Terraform AWS de destruir e recriar as entidades relacionadas ao
+API Gateway.  
+Caso aconteça, a única forma de resolver é excluindo o VPC Link e os itens relacionados ao API Gateway diretamente do
+dashboard  
 da AWS, incluindo as informações do Cloudfront.
 Fonte: https://github.com/hashicorp/terraform-provider-aws/issues/12195
+
+#### NLB is already associated with another VPC Endpoint Service
+
+```
+╷
+│ Error: waiting for API Gateway VPC Link (jwqd3s) create: unexpected state 'FAILED', wanted target 'AVAILABLE'. last error: NLB is already associated with another VPC Endpoint Service
+│ 
+│   with module.api_gateway.aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link,
+│   on modules/api_gateway/2-vpc_link.tf line 14, in resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link":
+│   14: resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
+```
+
+Este erro pode ocorrer durante a re-criação do VPC link, afirmando que o LoadBalancer do VPC já está associado a outro
+recurso.  
+Infelizmente, a unica maneira de resolver é desassociar manualmente o recurso pela interface do AWS ou pelo `AWS CLI`:  
+https://repost.aws/knowledge-center/elb-fix-nlb-associated-with-service   

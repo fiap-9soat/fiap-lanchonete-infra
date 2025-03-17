@@ -17,12 +17,22 @@ variable "mercado_pago_api_key" {
   type      = string
 }
 
+variable "mercado_pago_id_loja" {
+  sensitive = true
+  type      = string
+}
+
+variable "mercado_pago_id_conta" {
+  sensitive = true
+  type      = string
+}
+
 variable "cluster_name" {
   type = string
 }
 
 variable "aws_region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 
