@@ -24,7 +24,7 @@ variable "mercado_pago_id_loja" {
 
 variable "mercado_pago_id_conta" {
   sensitive = true
-  type      = string
+  type      = number
 }
 
 variable "cluster_name" {

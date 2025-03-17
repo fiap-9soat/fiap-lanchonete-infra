@@ -186,7 +186,8 @@ A solução é [limpar o estado local](#limpando-estado-local) e [re-aplicar](#a
 Esse erro pode acontecer devido a necessidade do `NLB`, componente do `AWS Load Balancer`, estar como `READY`
 antes da configuração do `API Gateway`. Isso também pode acontecer caso você não esteja corretamente autenticado na
 `AWS CLI`.  
-A solução é garantir que a autenticação do `AWS CLI` esteja valida, e executar o comando `terraform apply`.
+A solução é garantir que a o NLB esteja disponível antes de executar o apply, o que significa aguardar alguns segundos
+até o recurso terminar de ser provido, e executar o comando `terraform apply`.
 
 #### Error: error deleting API Gateway VPC Link (ox6a0g): BadRequestException: Cannot delete vpc link.
 

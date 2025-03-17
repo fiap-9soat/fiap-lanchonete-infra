@@ -52,8 +52,8 @@ variable "mercado_pago_id_loja" {
 
 variable "mercado_pago_id_conta" {
   sensitive   = true
-  type        = string
+  type        = number
   description = "ID da Conta do MP"
-  default     = "662144664"
+  default     = 662144664
 }
 
