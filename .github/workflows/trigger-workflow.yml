@@ -18,31 +18,16 @@ jobs:
     uses: fiap-9soat/fiap-lanchonete-auth/.github/workflows/target-workflow.yml@main
     with:
       message: "Hello from the main workflow!"
-    # secrets: inherit
-    # secrets: 
-    #   AWS_ACCESS_KEY:  ${{ secrets.AWS_ACCESS_KEY }}
-    #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-    #   AWS_REGION:  ${{ secrets.AWS_REGION }}
 
   call-lanchonete-infra:
     needs: call-lanchonete-auth
     uses: fiap-9soat/fiap-lanchonete-infra/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
-    secrets: inherit
-
-#   call-lanchonete-api:
-#     needs: call-lanchonete-infra
-#     # needs: [trigger-job, terraform-main]
-#     uses: fiap-9soat/fiap-lanchonete/.github/workflows/target-workflow.yml@dev
-#     with:
-#       message: "Hello from the main workflow!"
-#     secrets: inherit
 
   call-lanchonete-db:
     needs: call-lanchonete-api
     uses: fiap-9soat/fiap-lanchonete-db/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
-    secrets: inherit
+
