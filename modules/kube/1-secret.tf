@@ -17,8 +17,8 @@ resource "kubernetes_secret" "mercado_pago_secret" {
     namespace = "default"
   }
   data = {
-    MERCADO_PAGO_API_KEY = base64encode(var.mercado_pago_api_key)
-    ID_LOJA              = base64encode(var.mercado_pago_id_loja)
+    MERCADO_PAGO_API_KEY = var.mercado_pago_api_key
+    ID_LOJA              = var.mercado_pago_id_loja
   }
   type = "Opaque"
 }
