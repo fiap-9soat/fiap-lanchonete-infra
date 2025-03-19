@@ -85,6 +85,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
       AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
+      DB_USERNAME: ${{ github.event.inputs.db_username }}
+      DB_PASSWORD: ${{ github.event.inputs.db_password }}
       PAT: ${{ github.event.inputs.pat }}
 
   call-lanchonete-api:
