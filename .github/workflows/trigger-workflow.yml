@@ -57,8 +57,8 @@ jobs:
       message: "Hello from the main workflow!"
     secrets:
       AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
-      AWS_SECRET_ACCESS_KEY: echo ${{ github.event.inputs.aws_secret_access_key }} | base64 --decode
-      AWS_SESSION_TOKEN: echo ${{ github.event.inputs.aws_session_token }} | base64 --decode
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
       PAT: ${{ github.event.inputs.pat }}
 
@@ -70,8 +70,8 @@ jobs:
       db_url: "mysql:3306"
     secrets:
       AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
-      AWS_SECRET_ACCESS_KEY: echo ${{ github.event.inputs.aws_secret_access_key }} | base64 --decode
-      AWS_SESSION_TOKEN: echo ${{ github.event.inputs.aws_session_token }} | base64 --decode
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
       PAT: ${{ github.event.inputs.pat }}
 
@@ -82,8 +82,8 @@ jobs:
       message: "Hello from the main workflow!"
     secrets:
       AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
-      AWS_SECRET_ACCESS_KEY: echo ${{ github.event.inputs.aws_secret_access_key }} | base64 --decode
-      AWS_SESSION_TOKEN: echo ${{ github.event.inputs.aws_session_token }} | base64 --decode
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
       DB_USERNAME: ${{ github.event.inputs.db_username }}
       DB_PASSWORD: ${{ github.event.inputs.db_password }}
@@ -96,8 +96,8 @@ jobs:
       message: "Hello from the main workflow!"
     secrets:
       AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
-      AWS_SECRET_ACCESS_KEY: echo ${{ github.event.inputs.aws_secret_access_key }} | base64 --decode
-      AWS_SESSION_TOKEN: echo ${{ github.event.inputs.aws_session_token }} | base64 --decode
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
       PAT: ${{ github.event.inputs.pat }}
       DB_USERNAME: ${{ github.event.inputs.db_username }}
