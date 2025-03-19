@@ -7,20 +7,22 @@ principal do projeto.
 
 gh auth login
 colocar credenciais da org
-gh workflow run trigger-workflow.yml
-gh workflow run trigger-workflow.yml --ref develop
+
+echo '{
+"aws_access_key":"",
+"aws_secret_access_key":"",
+"aws_session_token":"",
+"pat":""}' | gh workflow run trigger-workflow.yml --ref develop --json
 
 AWS_ACCESS_KEY=
 AWS_SECRET_ACCESS_KEY=
-AWS_SESSION_TOKEN= codificado em BASE64 devido aos caracteres especiais
+AWS_SESSION_TOKEN=
+MERCADO_PAGO_API_KEY=
+PAT=
 AWS_REGION=us-east-1
 DB_USERNAME=fiap
 DB_PASSWORD=fiap_password
 DB_URL=mysql:3306
-DOCKER_PASSWORD=
-DOCKER_USERNAME=
-MERCADO_PAGO_API_KEY=
-PAT=
 
 ## Ordem de execução
 
