@@ -34,6 +34,7 @@ Sendo assim, no primeiro deploy, os projetos devem ser executados na seguinte or
 fiap-lanchonete-auth
 fiap-lanchonete-infra
 fiap-lanchonete-db
+fiap-lanchonete-api
 ```
 
 **Importante**: esse passo só é necessário caso você esteja "subindo" o projeto pela primeira vez,
@@ -86,7 +87,7 @@ A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terrafor
 `~/.aws/credentials`.
 
 | tfvars         | ~/.aws/credentials    |
-| -------------- | --------------------- |
+|----------------|-----------------------|
 | aws_access_key | aws_access_key_id     |
 | aws_secret_key | aws_secret_access_key |
 | aws_token_key  | aws_session_token     |
@@ -122,18 +123,7 @@ Para aplicar as alterações, basta rodar o seguinte comando e inserir 'yes' qua
 terraform apply
 ```
 
-### Após subida do RDS
-
-É de extrema importância que você altere as variaveis relacionadas ao banco de dados **APÓS** a subida do RDS.  
-_Esse passo normalmente só é necessário durante a subida inicial, exceto se as credenciais forem alteradas
-manualmente._  
-Altere as seguintes variaveis para os valores especificados
-no [fiap-lanchonete-db](https://github.com/fiap-9soat/fiap-lanchonete-db),
-em especial o `db_url`, que só é obtido após a subida da instância.
-
-```hcl
-db_url = "fiap-lanchonete-db.cgreghhtfwd5.us-east-1.rds.amazonaws.com"
-```
+**Atenção**: o processo de deploy pode levar até 15 minutos.
 
 ## Erros comuns
 
