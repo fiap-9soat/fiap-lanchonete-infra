@@ -39,10 +39,6 @@ on:
       pat:
         required: true
         type: string
-      eks_cluster_name:
-        required: false
-        type: string
-        default: "fiap-lanchonete-eks"
 
 env:
   TF_ACTION_WORKING_DIR: "terraform"
@@ -109,4 +105,3 @@ jobs:
       MERCADO_API_KEY: ${{ github.event.inputs.mercado_api_key }}
       ID_LOJA: ${{ github.event.inputs.id_loja }}
       ID_CONTA: ${{ github.event.inputs.id_conta }}
-      EKS_CLUSTER_NAME: ${{ github.event.inputs.eks_cluster_name }}
