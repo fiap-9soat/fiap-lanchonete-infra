@@ -13,8 +13,8 @@ data "kubernetes_service" "fiap_lanchonete_lb" {
   }
 }
 
-resource "time_sleep" "wait_30s" {
-  create_duration = "30s"
+resource "time_sleep" "wait_5min" {
+  create_duration = "5m"
 }
 
 data "aws_lb" "fiap_lanchonete_nlb" {
@@ -24,9 +24,9 @@ data "aws_lb" "fiap_lanchonete_nlb" {
 # Create API Gateway VPC Link
 # This will error out if 'nlb' is not 'READY'
 resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
-  name = "fiap-lanchonete-vpc-link"
+  name        = "fiap-lanchonete-vpc-link"
   target_arns = [data.aws_lb.fiap_lanchonete_nlb.arn]
-  depends_on = [time_sleep.wait_30s]
+  depends_on  = [time_sleep.wait_5min]
 }
 
 # Define integration with the backend via VPC Link
