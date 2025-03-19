@@ -2,6 +2,11 @@ name: Trigger Target Workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      id_conta:
+        required: false
+        type: string
+        default: "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
 
 env:
   TF_ACTION_WORKING_DIR: "terraform"
@@ -41,4 +46,5 @@ jobs:
     with:
       message: "Hello from the main workflow!"
       db_url: echo ${{ needs.call-lanchonete-db.outputs.db_url }}
+      id_conta: ${{ github.event.inputs.id_conta }}
     secrets: inherit
