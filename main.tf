@@ -33,16 +33,16 @@ module "workers_node_group" {
 }
 
 module "kube" {
-  source                = "./modules/kube"
-  mercado_pago_api_key  = var.mercado_pago_api_key
-  mercado_pago_id_conta = var.mercado_pago_id_conta
-  mercado_pago_id_loja  = var.mercado_pago_id_loja
-  mysql_url             = var.db_url
-  mysql_password        = var.db_password
-  mysql_username        = var.db_username
-  cluster_name          = module.eks.eks_cluster_name
-  vpc_id                = module.vpc.vpc_id
-  aws_region            = var.aws_region
+  source = "./modules/kube"
+  #   mercado_pago_api_key  = var.mercado_pago_api_key
+  #   mercado_pago_id_conta = var.mercado_pago_id_conta
+  #   mercado_pago_id_loja  = var.mercado_pago_id_loja
+  #   mysql_url             = var.db_url
+  #   mysql_password        = var.db_password
+  #   mysql_username        = var.db_username
+  cluster_name = module.eks.eks_cluster_name
+  vpc_id       = module.vpc.vpc_id
+  aws_region   = var.aws_region
 
   depends_on = [module.eks]
 }
