@@ -87,7 +87,7 @@ A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terrafor
 `~/.aws/credentials`.
 
 | tfvars         | ~/.aws/credentials    |
-|----------------|-----------------------|
+| -------------- | --------------------- |
 | aws_access_key | aws_access_key_id     |
 | aws_secret_key | aws_secret_access_key |
 | aws_token_key  | aws_session_token     |
