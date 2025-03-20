@@ -101,7 +101,6 @@ jobs:
       PAT: ${{ github.event.inputs.pat }}
       DB_USERNAME: ${{ github.event.inputs.db_username }}
       DB_PASSWORD: ${{ github.event.inputs.db_password }}
-      DB_URL: echo ${{ needs.call-lanchonete-db.outputs.db_url }}
       MERCADO_API_KEY: ${{ github.event.inputs.mercado_api_key }}
       ID_LOJA: ${{ github.event.inputs.id_loja }}
       ID_CONTA: ${{ github.event.inputs.id_conta }}
