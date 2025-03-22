@@ -3,16 +3,36 @@
 Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
 principal do projeto.
 
-## Temp
+## Como deployar o primeiro pela primeira vez
 
+### Instale o Github CLI
+
+Siga as instruções desse link:
+https://github.com/cli/cli#installation
+
+### Faça o login com as credenciais da organização
+
+Digite
+
+```
 gh auth login
-colocar credenciais da org
+```
 
+Escolha a opção `Github.com`, depois `HTTPS` e então `Paste an authentication token`.
+
+Insira seu token e pressione enter.
+
+### Execute o comando para iniciar o deploy no Github Actions
+
+```
 echo '{
 "aws_access_key":"",
 "aws_secret_access_key":"",
 "aws_session_token":"",
 "pat":""}' | gh workflow run trigger-workflow.yml --ref develop --json
+```
+
+Obs: PAT é o token da organização
 
 Argumentos opcionais
 mercado_api_key
