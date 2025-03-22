@@ -14,15 +14,13 @@ echo '{
 "aws_session_token":"",
 "pat":""}' | gh workflow run trigger-workflow.yml --ref develop --json
 
-AWS_ACCESS_KEY=
-AWS_SECRET_ACCESS_KEY=
-AWS_SESSION_TOKEN=
-MERCADO_PAGO_API_KEY=
-PAT=
-AWS_REGION=us-east-1
-DB_USERNAME=fiap
-DB_PASSWORD=fiap_password
-DB_URL=mysql:3306
+Argumentos opcionais
+mercado_api_key
+id_conta
+id_loja
+url_notificacao
+aws_region
+db_password
 
 ## Ordem de execução
 

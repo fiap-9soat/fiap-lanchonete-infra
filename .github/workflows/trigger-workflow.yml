@@ -20,7 +20,7 @@ on:
         type: string
         default: "https://www.yourserver.com/notifications"
       aws_region:
-        required: true
+        required: false
         type: string
         default: "us-east-1"
       db_password:
