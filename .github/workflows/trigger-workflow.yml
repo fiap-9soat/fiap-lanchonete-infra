@@ -15,6 +15,10 @@ on:
         required: false
         type: string
         default: "1B2D92F23"
+      url_notificacao:
+        required: false
+        type: string
+        default: "https://www.yourserver.com/notifications"
       aws_region:
         required: true
         type: string
@@ -104,3 +108,4 @@ jobs:
       MERCADO_API_KEY: ${{ github.event.inputs.mercado_api_key }}
       ID_LOJA: ${{ github.event.inputs.id_loja }}
       ID_CONTA: ${{ github.event.inputs.id_conta }}
+      URL_NOTIFICACAO: ${{ github.event.inputs.url_notificacao }}
