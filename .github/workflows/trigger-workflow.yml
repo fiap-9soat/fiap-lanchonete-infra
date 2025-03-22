@@ -23,10 +23,6 @@ on:
         required: true
         type: string
         default: "us-east-1"
-      db_username:
-        required: false
-        type: string
-        default: "fiap"
       db_password:
         required: false
         type: string
@@ -88,7 +84,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
       AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
-      DB_USERNAME: ${{ github.event.inputs.db_username }}
+      DB_USERNAME: "fiap"
       DB_PASSWORD: ${{ github.event.inputs.db_password }}
       PAT: ${{ github.event.inputs.pat }}
 
@@ -103,7 +99,7 @@ jobs:
       AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
       AWS_REGION: ${{ github.event.inputs.aws_region }}
       PAT: ${{ github.event.inputs.pat }}
-      DB_USERNAME: ${{ github.event.inputs.db_username }}
+      DB_USERNAME: "fiap"
       DB_PASSWORD: ${{ github.event.inputs.db_password }}
       MERCADO_API_KEY: ${{ github.event.inputs.mercado_api_key }}
       ID_LOJA: ${{ github.event.inputs.id_loja }}
