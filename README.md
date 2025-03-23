@@ -3,7 +3,7 @@
 Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
 principal do projeto.
 
-## Como deployar o primeiro pela primeira vez
+## Como deployar o projeto pela primeira vez utilizando o Github Actions
 
 ### Instale o Github CLI
 
@@ -45,7 +45,9 @@ Argumentos opcionais para se incluir no json:
 "db_password":
 ```
 
-## Ordem de execução
+## Como deployar o projeto pela primeira vez utilizando o terraform
+
+### Ordem de execução dos repositórios
 
 A maioria dos projetos nessa organização exporta e importa estados no backend compartilhado do Terraform (utilizando
 HCP).
@@ -64,18 +66,18 @@ Essa ordem garante que os projetos exportarão as variaveis necessárias no back
 Nos demais casos (como CI/CD, execuções do `terraform apply` posteriores),
 a ordem de execução não é importante.
 
-## Instalação e Execução
+### Instalação e Execução
 
-### Pre-requisitos
+#### Pre-requisitos
 
 Certifique-se de ter instalado uma versão recente da CLI do `terraform` e do `aws`.
 
-### Autenticação no AWS CLI
+#### Autenticação no AWS CLI
 
 É necessário autenticar-se com o `AWS` para viabilizar o deploy desse projeto.  
 https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html
 
-### Variaveis de ambiente
+#### Variaveis de ambiente
 
 É necessário criar algumas variaveis de ambiente para viabilizar a aplicação das configurações pelo CLI do Terraform.  
 Para ambiente local, basta utilizar o arquivo `dev.auto.tfvars.example` como exemplo, criando um `dev.auto.tfvars`
@@ -113,7 +115,7 @@ A tabela abaixo relaciona as credenciais especificadas nas variaveis do Terrafor
 | aws_secret_key | aws_secret_access_key |
 | aws_token_key  | aws_session_token     |
 
-### Estrutura
+#### Estrutura
 
 Esse repositório faz uso da funcionalidade de `modules` do Terraform, onde um arquivo principal (`main.tf`) orquestra o
 deploy
@@ -122,7 +124,7 @@ Para realizar os comandos (`terraform apply`, etc). Apenas as variaveis presente
 preenchidas.  
 Estas estão especificadas logo acima.
 
-## Aplicar configurações
+### Aplicar configurações
 
 Inicialize os módulos do Terraform do repositório:
 
