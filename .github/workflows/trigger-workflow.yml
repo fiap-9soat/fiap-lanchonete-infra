@@ -64,7 +64,7 @@ jobs:
 
   call-lanchonete-infra:
     needs: call-lanchonete-auth
-    uses: fiap-9soat/fiap-lanchonete-infra/.github/workflows/target-workflow.yml@develop
+    uses: fiap-9soat/fiap-lanchonete-infra/.github/workflows/target-workflow.yml@main
     with:
       message: "Hello from the main workflow!"
     secrets:
@@ -76,7 +76,7 @@ jobs:
 
   call-lanchonete-db:
     needs: call-lanchonete-infra
-    uses: fiap-9soat/fiap-lanchonete-db/.github/workflows/target-workflow.yml@develop
+    uses: fiap-9soat/fiap-lanchonete-db/.github/workflows/target-workflow.yml@main
     with:
       message: "Hello from the main workflow!"
     secrets:
