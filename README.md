@@ -29,18 +29,21 @@ echo '{
 "aws_access_key":"",
 "aws_secret_access_key":"",
 "aws_session_token":"",
-"pat":""}' | gh workflow run trigger-workflow.yml --ref develop --json
+"pat":""}' | gh workflow run trigger-workflow.yml --ref main --json
 ```
 
 Obs: PAT é o token da organização
 
-Argumentos opcionais
-mercado_api_key
-id_conta
-id_loja
-url_notificacao
-aws_region
-db_password
+Argumentos opcionais para se incluir no json:
+
+```
+"mercado_api_key":
+"id_conta":
+"id_loja":
+"url_notificacao":
+"aws_region":
+"db_password":
+```
 
 ## Ordem de execução
 
