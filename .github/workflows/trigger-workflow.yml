@@ -2,6 +2,43 @@ name: Trigger Target Workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      mercado_api_key:
+        required: false
+        type: string
+        default: "TEST-8402790990254628-112619-4290252fdac6fd07a3b8bb555578ff39-662144664"
+      id_conta:
+        required: false
+        type: number
+        default: 662144664
+      id_loja:
+        required: false
+        type: string
+        default: "1B2D92F23"
+      url_notificacao:
+        required: false
+        type: string
+        default: "https://www.yourserver.com/notifications"
+      aws_region:
+        required: false
+        type: string
+        default: "us-east-1"
+      db_password:
+        required: false
+        type: string
+        default: "fiap-lanchonete"
+      aws_access_key:
+        required: true
+        type: string
+      aws_secret_access_key:
+        required: true
+        type: string
+      aws_session_token:
+        required: true
+        type: string
+      pat:
+        required: true
+        type: string
 
 env:
   TF_ACTION_WORKING_DIR: "terraform"
@@ -18,26 +55,53 @@ jobs:
     uses: fiap-9soat/fiap-lanchonete-auth/.github/workflows/target-workflow.yml@main
     with:
       message: "Hello from the main workflow!"
-    secrets: inherit
+    secrets:
+      AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+      AWS_REGION: ${{ github.event.inputs.aws_region }}
+      PAT: ${{ github.event.inputs.pat }}
 
   call-lanchonete-infra:
     needs: call-lanchonete-auth
     uses: fiap-9soat/fiap-lanchonete-infra/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
-    secrets: inherit
-
-  call-lanchonete-api:
-    needs: call-lanchonete-infra
-    # needs: [trigger-job, terraform-main]
-    uses: fiap-9soat/fiap-lanchonete/.github/workflows/target-workflow.yml@dev
-    with:
-      message: "Hello from the main workflow!"
-    secrets: inherit
+    secrets:
+      AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+      AWS_REGION: ${{ github.event.inputs.aws_region }}
+      PAT: ${{ github.event.inputs.pat }}
 
   call-lanchonete-db:
-    needs: call-lanchonete-api
+    needs: call-lanchonete-infra
     uses: fiap-9soat/fiap-lanchonete-db/.github/workflows/target-workflow.yml@develop
     with:
       message: "Hello from the main workflow!"
-    secrets: inherit
+    secrets:
+      AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+      AWS_REGION: ${{ github.event.inputs.aws_region }}
+      DB_USERNAME: "fiap"
+      DB_PASSWORD: ${{ github.event.inputs.db_password }}
+      PAT: ${{ github.event.inputs.pat }}
+
+  call-lanchonete-api:
+    needs: call-lanchonete-db
+    uses: fiap-9soat/fiap-lanchonete-api/.github/workflows/target-workflow.yml@main
+    with:
+      message: "Hello from the main workflow!"
+    secrets:
+      AWS_ACCESS_KEY: ${{ github.event.inputs.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+      AWS_REGION: ${{ github.event.inputs.aws_region }}
+      PAT: ${{ github.event.inputs.pat }}
+      DB_USERNAME: "fiap"
+      DB_PASSWORD: ${{ github.event.inputs.db_password }}
+      MERCADO_API_KEY: ${{ github.event.inputs.mercado_api_key }}
+      ID_LOJA: ${{ github.event.inputs.id_loja }}
+      ID_CONTA: ${{ github.event.inputs.id_conta }}
+      URL_NOTIFICACAO: ${{ github.event.inputs.url_notificacao }}

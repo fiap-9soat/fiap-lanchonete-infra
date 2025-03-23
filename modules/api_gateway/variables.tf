@@ -25,3 +25,9 @@ variable "aws_token_key" {
   description = "The aws development account token (optional)"
   default     = ""
 }
+
+variable "create_vpc_link" {
+  type        = bool
+  description = "If a new VPC link should be created."
+  default     = false
+}

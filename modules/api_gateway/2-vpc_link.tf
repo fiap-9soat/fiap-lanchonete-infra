@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    time = {
+      source  = "hashicorp/time"
+      version = "0.12.1"
+    }
+  }
+}
 data "kubernetes_service" "fiap_lanchonete_lb" {
   metadata {
     name      = "fiap-lanchonete-lb"
@@ -5,28 +13,20 @@ data "kubernetes_service" "fiap_lanchonete_lb" {
   }
 }
 
-data "aws_lb" "fiap_lanchonete_nlb" {
-  depends_on = [data.kubernetes_service.fiap_lanchonete_lb]
+resource "time_sleep" "wait_5min" {
+  create_duration = "5m"
 }
 
-resource "null_resource" "wait_for_nlb" {
-  provisioner "local-exec" {
-    command = <<EOT
-              AWS_REGION=${var.aws_region}\
-              AWS_ACCESS_KEY_ID=${var.aws_access_key}\
-              AWS_SECRET_ACCESS_KEY=${var.aws_secret_key}\
-              AWS_SESSION_TOKEN=${var.aws_token_key}\
-              aws elbv2 wait load-balancer-available --load-balancer-arn ${data.aws_lb.fiap_lanchonete_nlb.arn}
-              EOT
-  }
+data "aws_lb" "fiap_lanchonete_nlb" {
+  depends_on = [data.kubernetes_service.fiap_lanchonete_lb]
 }
 
 # Create API Gateway VPC Link
 # This will error out if 'nlb' is not 'READY'
 resource "aws_api_gateway_vpc_link" "fiap_lanchonete_vpc_link" {
-  name  = "fiap-lanchonete-vpc-link"
+  name        = "fiap-lanchonete-vpc-link"
   target_arns = [data.aws_lb.fiap_lanchonete_nlb.arn]
-  depends_on = [null_resource.wait_for_nlb]
+  depends_on  = [time_sleep.wait_5min]
 }
 
 # Define integration with the backend via VPC Link
@@ -40,6 +40,10 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   connection_type         = "VPC_LINK"
   connection_id           = aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link.id
   passthrough_behavior    = "WHEN_NO_MATCH"
+
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 
   depends_on = [aws_api_gateway_method.any_method, aws_api_gateway_vpc_link.fiap_lanchonete_vpc_link]
 }
