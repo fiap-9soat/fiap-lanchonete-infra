@@ -3,7 +3,13 @@
 Repositório contendo a configuração (Terraform) do EKS, API Gateway, e VPC compartilhado para viabilizar o deploy da API
 principal do projeto.
 
-## Como deployar o primeiro pela primeira vez
+## Tutorial em video
+Fizemos um tutorial em vídeo explicando todo o processo de deploy da API com Terraform, desde o clone dos repositórios até o teste de requisições em produção. Confira no link abaixo:
+https://www.youtube.com/watch?v=X9SdKJ1l160
+
+## Deploy pelo CI/CD
+É necessário ter acesso as credenciais da organização para executar esse passo.
+Caso não esteja disponível, veja o tutorial de deploy manual abaixo. 
 
 ### Instale o Github CLI
 
